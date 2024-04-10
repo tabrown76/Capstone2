@@ -1,0 +1,22 @@
+.custom-dropdown-menu {
+    right: 0;
+    left: auto;
+}
+
+.right-nav-links {
+  display: flex;
+  margin-left: auto;
+}
+
+.right-nav-links a {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.NavLink {
+  color: #fff;
+}
+
+.NavLink:hover {
+  color: #fff;
+}
