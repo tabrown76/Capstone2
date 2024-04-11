@@ -1,14 +1,14 @@
 import React, {useContext, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardBody, CardTitle, CardSubtitle, Button } from "reactstrap";
-import SearchBar from "./SearchBar";
-import RecipeModal from "./RecipeModal";
+import SearchBar from "../SearchBar";
+import RecipeModal from "../RecipeModal";
 import { Context } from "../Context";
 import "../styles/Home.css";
 
 const Home = () => {
   const navigate = useNavigate();
-  const {isModalVisible, closeModal, apiCall, recipeData} = useContext(Context);
+  const { isModalVisible } = useContext(Context); 
 
   return (
     <section className="col-md-8">
@@ -31,7 +31,7 @@ const Home = () => {
           </>
         </CardBody>
       </Card>
-      {isModalVisible && <RecipeModal recipeData={recipeData} onClose={closeModal} />}
+      {isModalVisible && <RecipeModal />}
     </section>
   )
 }

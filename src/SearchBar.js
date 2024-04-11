@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import { Context } from "../Context";
+import { Context } from "./Context";
 import { Button } from "reactstrap";
-import "../styles/SearchBar.css";
+import "./styles/SearchBar.css";
 
 const SearchBar = () => {
     const {queryTerm, setQueryTerm, apiCall} = useContext(Context);

@@ -12,12 +12,16 @@
 }
   
 .recipe-modal-content {
+  position: relative;
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
   max-width: 500px;
   width: 90%;
   text-align: center;
+  max-height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .recipe-modal-content > h2,
@@ -35,4 +39,19 @@ img {
 ul {
   list-style-type: none;
   text-align: left;
+}
+
+.close-icon {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  transform: translate(50%, -50%);
+  cursor: pointer;
+  color: black;
+  font-size: 24px;
+  z-index: 1000;
+}
+
+.close-icon:hover {
+  color: red;
 }
