@@ -1,3 +1,8 @@
+.nav-img {
+  max-height: 25px;
+  margin-right: 5px;
+}
+
 .custom-dropdown-menu {
     right: 0;
     left: auto;

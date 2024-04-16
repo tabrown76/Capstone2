@@ -12,6 +12,7 @@ import {
   DropdownItem, 
   NavItem} from 'reactstrap';
 import {Context} from "./Context";
+import favicon from "./static/favicon.jpg";
 import "./styles/Nav.css";
 
 const RecipeNav = () => {
@@ -25,7 +26,10 @@ const RecipeNav = () => {
     return (
       <div>
         <Navbar color="dark" dark expand="md">
-          <NavbarBrand href="/">I don't know. What do you want?</NavbarBrand>
+          <NavbarBrand href="/">
+            <img className="nav-img img-fluid" src={favicon}/>
+            I don't know. What do you want?
+          </NavbarBrand>
           {/* {user.username ? (
             <>               
               <NavbarToggler onClick={toggle} />
@@ -54,10 +58,10 @@ const RecipeNav = () => {
           ) : */}{( 
             <div className="right-nav-links">
               <NavItem>
-                <NavLink className="NavLink" href="" color="dark">Login</NavLink>
+                <NavLink className="NavLink" href="/login" color="dark">Login</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink className="NavLink" href="" color="dark">Signup</NavLink>
+                <NavLink className="NavLink" href="/signup" color="dark">Signup</NavLink>
               </NavItem>
             </div>
           )          

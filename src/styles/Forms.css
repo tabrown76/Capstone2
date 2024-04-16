@@ -1,0 +1,39 @@
+.signup-header {
+    margin-bottom: 10px;
+}
+
+/* General styling for the entire form */
+Form {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+  
+/* Styling for form groups */
+FormGroup {
+    margin-bottom: 20px;
+}
+  
+/* Label styling */
+Label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+}
+  
+/* Input field styling */
+Input.Form-input.text-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+  
+/* Hover state for input fields */
+Input:hover {
+    border-color: #666;
+}

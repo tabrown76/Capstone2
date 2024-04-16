@@ -1,8 +1,11 @@
 .search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: auto;
     padding-top: 2rem;
-    text-align: center;
 }
+
 
 .search-input {
     font-size: 16px; 

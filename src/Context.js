@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import {jwtDecode} from "jwt-decode";
+// import {jwtDecode} from "jwt-decode";
 
 export const Context = createContext();
 
@@ -26,27 +26,12 @@ export const ContextProvider = ({ children }) => {
             const apiIndex = Math.floor(Math.random() * 20);
             setRecipeData(res.data.hits[apiIndex].recipe);
             console.log(recipeData);
-            // setNextPage(res.data._links.next.href);
             //check if !recipe.url
             setIsModalVisible(true);
           })
           .catch(error => {
             console.error(`Error fetching data: `, error);
             navigate("/NotFound");
-          })
-    }
-
-    const nextApiCall = () => {
-        axios.get(nextPage)
-        .then(res => {
-            console.log(res)
-            const apiIndex = Math.floor(Math.random() * 20);
-            setRecipeData(res.data.hits[apiIndex].recipe);
-            console.log(recipeData);
-            setNextPage(res.data._links.next.href);
-          })
-          .catch(error => {
-            console.error(`Error fetching data: `, error);
           })
     }
 
@@ -57,8 +42,7 @@ export const ContextProvider = ({ children }) => {
             setQueryTerm,
             isModalVisible,
             closeModal,
-            apiCall,
-            nextApiCall
+            apiCall
         }}>
             {children}
         </Context.Provider>
