@@ -17,7 +17,7 @@ import "./styles/Nav.css";
 
 const RecipeNav = () => {
     const [isOpen, setIsOpen] = useState(false);
-    // const {user, logout} = useContext(Context);
+    const {user, logout} = useContext(Context);
   
     const toggle = () =>  {
         return setIsOpen(!isOpen)
@@ -30,16 +30,16 @@ const RecipeNav = () => {
             <img className="nav-img img-fluid" src={favicon}/>
             I don't know. What do you want?
           </NavbarBrand>
-          {/* {user.username ? (
+          {user && user.name ? (
             <>               
               <NavbarToggler onClick={toggle} />
               <Collapse isOpen={isOpen} navbar>
                 <Nav style={{marginLeft: "auto"}} navbar>
                   <UncontrolledDropdown nav inNavbar >
                     <DropdownToggle nav caret>
-                      {user.username}
+                      {user.name}
                     </DropdownToggle>
-                    <DropdownMenu className="custom-dropdown-menu" dark>
+                    <DropdownMenu className="custom-dropdown-menu" right dark>
                       <DropdownItem>
                         <NavLink href="">Meal Planning</NavLink>
                       </DropdownItem>
@@ -55,7 +55,7 @@ const RecipeNav = () => {
                 </Nav>
               </Collapse>            
             </>
-          ) : */}{( 
+          ) : ( 
             <div className="right-nav-links">
               <NavItem>
                 <NavLink className="NavLink" href="/login" color="dark">Login</NavLink>

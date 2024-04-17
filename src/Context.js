@@ -1,7 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-// import {jwtDecode} from "jwt-decode";
 
 export const Context = createContext();
 
@@ -12,7 +11,7 @@ export const ContextProvider = ({ children }) => {
     const [recipeData, setRecipeData] = useState(null);
     const [queryTerm, setQueryTerm] = useState("");
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [nextPage, setNextPage] = useState(null);
+    const [user, setUser] = useState(null);
     const navigate = useNavigate();
 
     const closeModal = () => setIsModalVisible(false);
@@ -35,6 +34,24 @@ export const ContextProvider = ({ children }) => {
           })
     }
 
+    useEffect(() => {
+      const storedUserData = localStorage.getItem('userData');
+      if (storedUserData) {
+        setUser(JSON.parse(storedUserData));
+      }
+    }, []);
+    
+
+    const setUserSession = userData => {
+      setUser(userData);
+      localStorage.setItem('userData', JSON.stringify(userData));
+    }
+  
+    const logout = () => {
+      setUser(null);
+      localStorage.removeItem('userData');
+    }
+
     return (
         <Context.Provider value={{ 
             recipeData,
@@ -42,7 +59,10 @@ export const ContextProvider = ({ children }) => {
             setQueryTerm,
             isModalVisible,
             closeModal,
-            apiCall
+            apiCall,
+            user,
+            setUserSession,
+            logout
         }}>
             {children}
         </Context.Provider>
