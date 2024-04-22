@@ -5,7 +5,7 @@ import "./styles/RecipeModal.css";
 
 const RecipeModal = () => {
     // if (!recipeData) return null;
-    const { recipeData, closeModal, apiCall } = useContext(Context);
+    const { recipeData, closeModal, apiCall, user } = useContext(Context);
     const modalContentRef = useRef(null);
 
     const handleKeyDown = (e) => {
@@ -54,7 +54,7 @@ const RecipeModal = () => {
             <a href={recipeData.url} target="_blank" rel="noopener noreferrer" className="Button btn btn-secondary">
                 Make This!
             </a>
-            {/* <Button className="Button" >Add to Meal Plan</Button> */}
+            {user?.name && <Button className="Button" >Add to Meal Plan</Button>}
             <Button className="Button" onClick={handleNext}>Next</Button>
         </div>
       </div>

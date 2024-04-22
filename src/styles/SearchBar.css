@@ -1,4 +1,5 @@
 .search-container {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -6,16 +7,69 @@
     padding-top: 2rem;
 }
 
+.search-container .filter-dropdown {
+    max-height: 100px;
+    overflow-y: auto;
+}
+
+.filter-dropdown {
+    appearance: none; 
+    background: #ccc url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right .75rem center;
+    background-size: 12px 12px; 
+    border: 2px solid darkslategrey; 
+    border-right: none;
+    padding-right: 1.5rem; 
+    border-top-left-radius: .5rem;
+    border-bottom-left-radius: .5rem;
+}
+
+.filter-dropdown::-ms-expand {
+    display: none; /* This hides the native dropdown caret in IE11 */
+}
 
 .search-input {
     font-size: 16px; 
-    padding: 12px 24px;
+    margin-right: 5px;
+    border: 2px solid darkslategrey; 
+    border-left: none;  
+    border-top-right-radius: 0.5rem; 
+    border-bottom-right-radius: 0.5rem; 
+    outline: none; 
+    width: 33vw;
+}
+
+.search-input.no-user {
+    font-size: 16px; 
     margin-right: 5px;
     border: 2px solid darkslategrey; 
     border-radius: 0.5rem; 
     outline: none; 
 }
 
-.search-input:focus {
-    border-color: black; 
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.recent-searches {
+    position: absolute;
+    top: 100%;
+    background-color: #fff;
+    list-style: none;
+    padding: 0;
+    margin-top: 0px;
+    width: 33vw;
+    border: 1px solid #ccc;
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+    z-index: 100;
+}
+
+.recent-searches li {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.recent-searches li:hover {
+    background-color: #f0f0f0;
 }

@@ -1,15 +1,14 @@
-import React, {useContext, useState} from "react";
-import { useNavigate } from "react-router-dom";
-import { Card, CardBody, CardTitle, CardSubtitle, Button } from "reactstrap";
+import React, { useContext } from "react";
+import { Card, CardBody, CardTitle, CardSubtitle } from "reactstrap";
 import SearchBar from "../SearchBar";
 import RecipeModal from "../RecipeModal";
 import { Context } from "../Context";
+import HealthOptions from "../HealthOptions";
 import "../styles/Home.css";
 import CarouselBackground from "../Carousel";
 
 const Home = () => {
-  const navigate = useNavigate();
-  const { isModalVisible } = useContext(Context); 
+  const { isModalVisible, user } = useContext(Context); 
 
   return (
     <div className="home-container">
@@ -20,9 +19,14 @@ const Home = () => {
             <CardTitle className="CardTitle">
               Find new recipes! Maybe even make them...
             </CardTitle>
-            <CardSubtitle className="CardSubtitle">
+            {user === null ? (<CardSubtitle className="CardSubtitle">
               Sign up to filter results, create meal plans, and more!
-            </CardSubtitle>
+            </CardSubtitle>)
+            :
+            (<div>
+              <h6>Choose Health Options:</h6>
+              <HealthOptions />
+            </div>)}
             <>
               <SearchBar />            
             </>

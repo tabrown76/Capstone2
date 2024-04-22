@@ -30,7 +30,7 @@ const RecipeNav = () => {
             <img className="nav-img img-fluid" src={favicon}/>
             I don't know. What do you want?
           </NavbarBrand>
-          {user && user.name ? (
+          {user?.name ? (
             <>               
               <NavbarToggler onClick={toggle} />
               <Collapse isOpen={isOpen} navbar>
@@ -39,7 +39,7 @@ const RecipeNav = () => {
                     <DropdownToggle nav caret>
                       {user.name}
                     </DropdownToggle>
-                    <DropdownMenu className="custom-dropdown-menu" right dark>
+                    <DropdownMenu className="custom-dropdown-menu"  end dark>
                       <DropdownItem>
                         <NavLink href="">Meal Planning</NavLink>
                       </DropdownItem>

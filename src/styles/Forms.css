@@ -18,7 +18,7 @@ FormGroup {
 }
   
 /* Label styling */
-Label {
+FormGroup Label {
     font-weight: bold;
     display: block;
     margin-bottom: 8px;

@@ -45,7 +45,6 @@ a.Button {
   cursor: pointer;
 }
 
-.search-input:hover,
 .Button:hover {
   background-color: black;
 }
