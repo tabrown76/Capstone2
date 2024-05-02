@@ -15,7 +15,10 @@ export const ContextProvider = ({ children }) => {
     const [selectedOptions, setSelectedOptions] = useState([]);
     const navigate = useNavigate();
 
-    const closeModal = () => setIsModalVisible(false);
+    const closeModal = () => {
+      setIsModalVisible(false);
+      setQueryTerm('');
+    } 
 
     const apiCall = (cuisineType) => {
       let url= `${baseUrl}?type=public&q=${encodeURIComponent(queryTerm)}&app_id=${appId}&app_key=${appKey}`;
@@ -66,6 +69,7 @@ export const ContextProvider = ({ children }) => {
 
     const setUserSession = userData => {
       setUser(userData);
+      // change this for production
       localStorage.setItem('userData', JSON.stringify(userData));
     }
   

@@ -5,7 +5,7 @@ import "./styles/RecipeModal.css";
 
 const RecipeModal = () => {
     // if (!recipeData) return null;
-    const { recipeData, closeModal, apiCall, user } = useContext(Context);
+    const { recipeData, closeModal, apiCall, user, queryTerm } = useContext(Context);
     const modalContentRef = useRef(null);
 
     const handleKeyDown = (e) => {
@@ -25,6 +25,7 @@ const RecipeModal = () => {
     }, [])
 
     const handleNext = () => {
+        console.log(`queryTerm: ${queryTerm}`);
         apiCall();
     
         // Scroll the modal content back to the top

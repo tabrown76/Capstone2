@@ -24,6 +24,9 @@ const Home = () => {
             </CardSubtitle>)
             :
             (<div>
+              <CardSubtitle className="CardSubtitle">
+              Find a new twist for an old favorite, or try something completely new!
+              </CardSubtitle>
               <h6>Choose Health Options:</h6>
               <HealthOptions />
             </div>)}

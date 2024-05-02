@@ -3,6 +3,10 @@ import React from "react";
 
 function HealthOptionCheckbox({ label, checked, onChange }){
 
+    function capitalize(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1).replace(/-/g, ' ');
+    }    
+
     return (
         <div>
             <input
@@ -12,7 +16,7 @@ function HealthOptionCheckbox({ label, checked, onChange }){
                 checked={checked}
                 onChange={onChange}
             />
-            <label htmlFor={label}>{label.replace('-', ' ')}</label>
+            <label htmlFor={label}>{capitalize(label)}</label>
         </div>
     )
 }

@@ -27,7 +27,7 @@ function Login() {
             navigate('/');
         }}
         onError={() => {
-          console.log('Login Failed');
+          console.error('Login Failed');
         }}
       />
     );
