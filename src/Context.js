@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
+import {jwtDecode} from "jwt-decode";
+import NewEatsApi from './Api';
 
 export const Context = createContext();
 
@@ -11,37 +13,38 @@ export const ContextProvider = ({ children }) => {
     const [recipeData, setRecipeData] = useState(null);
     const [queryTerm, setQueryTerm] = useState("");
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [user, setUser] = useState(null);
+    const [token, setToken] = useState("");
+    const [user, setUser] = useState({});
     const [selectedOptions, setSelectedOptions] = useState([]);
+    const [tooManyFilters, setTooManyFilters] = useState(false);
     const navigate = useNavigate();
 
     const closeModal = () => {
       setIsModalVisible(false);
       setQueryTerm('');
+      setSelectedOptions([]);
     } 
 
     const apiCall = (cuisineType) => {
       let url= `${baseUrl}?type=public&q=${encodeURIComponent(queryTerm)}&app_id=${appId}&app_key=${appKey}`;
 
       if(cuisineType !== undefined && cuisineType !== '') {
-        console.log("cuisineType is truthy:", cuisineType);
         url += `&cuisineType=${encodeURI(cuisineType)}`;
       }
 
-      console.log(`options: ${selectedOptions}`);
       if(selectedOptions.length > 0){
-        
         const optionsString = selectedOptions.map(option => `&health=${option}`).join('');
         url += optionsString;
       }
 
       url += `&random=true`;
-      console.log(`url: ${url}`)
 
       axios.get(url)
         .then(res => {
           console.log(res);
-          const countFromApi = res.data._links && res.data._links.count ? res.data._links.count : 0;
+          setTooManyFilters(false);
+          const countFromApi = res.data.count ? res.data.count : 0;
+          if(countFromApi === 0) setTooManyFilters(true);
           const maxIndex = countFromApi > 0 && countFromApi < 20 ? countFromApi : 20;
           const apiIndex = Math.floor(Math.random() * maxIndex);
 
@@ -65,18 +68,6 @@ export const ContextProvider = ({ children }) => {
         setUser(JSON.parse(storedUserData));
       }
     }, []);
-    
-
-    const setUserSession = userData => {
-      setUser(userData);
-      // change this for production
-      localStorage.setItem('userData', JSON.stringify(userData));
-    }
-  
-    const logout = () => {
-      setUser(null);
-      localStorage.removeItem('userData');
-    }
 
     const handleCheckboxChange = (option) => {
       setSelectedOptions(prev => {
@@ -88,6 +79,56 @@ export const ContextProvider = ({ children }) => {
       })
     }
 
+    useEffect(() => {
+      const token = localStorage.getItem('token');
+      if (token) {
+          const decodedToken = jwtDecode(token);
+          setUser(decodedToken);
+      }
+    }, []);
+
+    const postData = async(formData) => {
+      try {
+          const token = await NewEatsApi.registerUser(formData);
+          const decodedToken = jwtDecode(token);
+          
+          setToken(token);
+          localStorage.setItem('token', token);
+          setUser(decodedToken);
+      } catch(e) {
+          console.error(`Error:`, e);
+      }
+    }
+
+    const login = async(formData) => {
+      try {
+          const token = await NewEatsApi.loginUser(formData);
+          const decodedToken = jwtDecode(token);
+
+          setToken(token);
+          localStorage.setItem('token', token);
+          setUser(decodedToken)
+      } catch(e) {
+          if(e[0] === "Request failed with status code 401"){
+              navigate('/NotAuthorized');
+          }
+          console.error(`Error:`, e);
+      }
+    }
+    
+    const logout = () => {
+      setToken("");
+      localStorage.clear();
+      setUser({});
+      navigate('/');
+    }
+
+    const apiTest = () => {
+      const token = localStorage.getItem('token');
+      const decodedToken = jwtDecode(token);
+      NewEatsApi.getUser(decodedToken.username);
+    }
+
     return (
         <Context.Provider value={{ 
             recipeData,
@@ -97,10 +138,14 @@ export const ContextProvider = ({ children }) => {
             closeModal,
             apiCall,
             user,
-            setUserSession,
+            postData,
+            login,
             logout,
             handleCheckboxChange,
-            selectedOptions
+            selectedOptions,
+            tooManyFilters,
+            token,
+            apiTest
         }}>
             {children}
         </Context.Provider>

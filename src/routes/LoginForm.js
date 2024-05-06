@@ -6,7 +6,7 @@ import "../styles/Forms.css"
 
 const LoginForm = () => {
     const navigate = useNavigate();
-    const {login} = useContext(Context);
+    const { login } = useContext(Context);
 
     const [formData, setFormData] = useState({
         username: '',

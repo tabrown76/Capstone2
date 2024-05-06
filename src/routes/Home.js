@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Card, CardBody, CardTitle, CardSubtitle } from "reactstrap";
+import { Card, CardBody, CardTitle, CardSubtitle, Button } from "reactstrap";
 import SearchBar from "../SearchBar";
 import RecipeModal from "../RecipeModal";
 import { Context } from "../Context";
@@ -8,7 +8,7 @@ import "../styles/Home.css";
 import CarouselBackground from "../Carousel";
 
 const Home = () => {
-  const { isModalVisible, user } = useContext(Context); 
+  const { isModalVisible, user, apiTest } = useContext(Context); 
 
   return (
     <div className="home-container">
@@ -31,7 +31,8 @@ const Home = () => {
               <HealthOptions />
             </div>)}
             <>
-              <SearchBar />            
+              <SearchBar />
+              <Button onClick={() => apiTest()}>Test</Button>          
             </>
           </CardBody>
         </Card>
