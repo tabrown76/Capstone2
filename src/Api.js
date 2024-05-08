@@ -1,4 +1,5 @@
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001"; 
 // console.log(REACT_APP_BASE_URL);
@@ -11,7 +12,11 @@ export default class NewEatsApi {
 
     const url = `${BASE_URL}/${endpoint}`;
     const headers = { Authorization: `Bearer ${NewEatsApi.token}` };
-    console.log(`header: ${JSON.stringify(headers)}`)
+    // const headerString = JSON.stringify(headers);
+    // const decode = jwtDecode(NewEatsApi.token);
+    // const decodeString = JSON.stringify(decode);
+    // console.log(`header: ${headerString}`); 
+    // console.log(`token: ${decodeString}`);
     const params = (method === "get")
         ? data
         : {};
@@ -30,6 +35,12 @@ export default class NewEatsApi {
   /** Register a user. */
   static async registerUser(data){
     let res = await this.request(`auth/register`, data, "post");
+    return res.token;
+  }
+
+  /** Regist a user with Google. */
+  static async googleRegister(data){
+    let res = await this.request(`auth/googleregister`, data, "post");
     return res.token;
   }
 

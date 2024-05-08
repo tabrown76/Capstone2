@@ -27,17 +27,17 @@ const RecipeNav = () => {
       <div>
         <Navbar color="dark" dark expand="md">
           <NavbarBrand href="/">
-            <img className="nav-img img-fluid" src={favicon}/>
+            <img className="nav-img img-fluid" src={favicon} alt='favicon'/>
             I don't know. What do you want?
           </NavbarBrand>
-          {user?.name ? (
+          {user?.firstName ? (
             <>               
               <NavbarToggler onClick={toggle} />
               <Collapse isOpen={isOpen} navbar>
                 <Nav style={{marginLeft: "auto"}} navbar>
                   <UncontrolledDropdown nav inNavbar >
                     <DropdownToggle nav caret>
-                      {user.name}
+                      {user.firstName}
                     </DropdownToggle>
                     <DropdownMenu className="custom-dropdown-menu"  end dark>
                       <DropdownItem>

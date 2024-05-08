@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import {Context} from "../Context";
-import Login from "../helpers/GoogleLogin";
+import GoogleRegister from "../helpers/GoogleRegister";
 import "../styles/Forms.css"
 
 const SignupForm = () => {
@@ -28,6 +28,7 @@ const SignupForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         postData(formData);
+        console.log(formData);
         setFormData({
             username: '',
             firstName: '',
@@ -43,7 +44,7 @@ const SignupForm = () => {
             <Form className="card" onSubmit={handleSubmit}>
               <div>
                 <header className="signup-header">
-                  <Login />
+                  <GoogleRegister />
                 </header>
               </div>
                 <FormGroup>

@@ -62,13 +62,6 @@ export const ContextProvider = ({ children }) => {
       console.log(recipeData);
     }, [recipeData])
 
-    useEffect(() => {
-      const storedUserData = localStorage.getItem('userData');
-      if (storedUserData) {
-        setUser(JSON.parse(storedUserData));
-      }
-    }, []);
-
     const handleCheckboxChange = (option) => {
       setSelectedOptions(prev => {
         if (prev.includes(option)) {
@@ -89,9 +82,11 @@ export const ContextProvider = ({ children }) => {
 
     const postData = async(formData) => {
       try {
-          const token = await NewEatsApi.registerUser(formData);
+          const token = formData.googleId ? 
+            await NewEatsApi.googleRegister(formData) :
+            await NewEatsApi.registerUser(formData);
           const decodedToken = jwtDecode(token);
-          
+
           setToken(token);
           localStorage.setItem('token', token);
           setUser(decodedToken);
@@ -124,9 +119,11 @@ export const ContextProvider = ({ children }) => {
     }
 
     const apiTest = () => {
-      const token = localStorage.getItem('token');
-      const decodedToken = jwtDecode(token);
-      NewEatsApi.getUser(decodedToken.username);
+      // const token = localStorage.getItem('token');
+      // const decodedToken = jwtDecode(token);
+      // NewEatsApi.getUser(decodedToken.username);
+      logout();
+      console.log(`user: ${JSON.stringify(user)}`)
     }
 
     return (

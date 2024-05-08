@@ -77,7 +77,7 @@ const SearchBar = () => {
 
     return (
         <div ref={containerRef} className="search-container">
-            {user?.name && <select onChange={handleFilterChange} 
+            {user?.firstName && <select onChange={handleFilterChange} 
                 value={cuisineType} 
                 className="filter-dropdown" 
                 aria-label="Select Cuisine Type">
@@ -87,7 +87,7 @@ const SearchBar = () => {
             <div className="input-container">
                 <input
                     ref={inputRef}
-                    className={`search-input ${!user?.name ? 'no-user' : ''}`}
+                    className={`search-input ${!user?.firstName ? 'no-user' : ''}`}
                     type="text"
                     placeholder="Search..."
                     value={queryTerm}

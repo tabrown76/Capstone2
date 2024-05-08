@@ -22,7 +22,7 @@ const RecipeModal = () => {
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         };
-    }, [])
+    })
 
     const handleNext = () => {
         console.log(`queryTerm: ${queryTerm}`);
@@ -55,7 +55,7 @@ const RecipeModal = () => {
             <a href={recipeData.url} target="_blank" rel="noopener noreferrer" className="Button btn btn-secondary">
                 Make This!
             </a>
-            {user?.name && <Button className="Button" >Add to Meal Plan</Button>}
+            {user?.firstName && <Button className="Button" >Add to Meal Plan</Button>}
             <Button className="Button" onClick={handleNext}>Next</Button>
         </div>
       </div>

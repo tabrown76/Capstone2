@@ -4,16 +4,22 @@ import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { Context } from '../Context';
 
-function Login() {  
+function GoogleRegister() {  
     const navigate = useNavigate();
-    const { setUser } = useContext(Context);
+    const { postData } = useContext(Context);
 
     function handleCredentialResponse(response) {
         const { credential } = response;
         try {
             const decoded = jwtDecode(credential);
-            console.log('Decoded JWT:', decoded);
+            const userData = {
+              firstName: decoded.given_name,
+              lastName: decoded.family_name,
+              email: decoded.email,
+              googleId: decoded.sub
+            }
             
+            postData(userData);
         } catch (error) {
             console.error('Failed to decode JWT:', error);
         }
@@ -23,14 +29,13 @@ function Login() {
       <GoogleLogin
         onSuccess={credentialResponse => {
             handleCredentialResponse(credentialResponse);
-            console.log(credentialResponse);
             navigate('/');
         }}
         onError={() => {
-          console.error('Login Failed');
+          console.error('Registration Failed');
         }}
       />
     );
 }
 
-export default Login;
+export default GoogleRegister;

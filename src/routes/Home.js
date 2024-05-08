@@ -25,7 +25,7 @@ const Home = () => {
             :
             (<div>
               <CardSubtitle className="CardSubtitle">
-              Find a new twist for an old favorite, or try something completely new!
+                Search by ingredients to find your next meal!
               </CardSubtitle>
               <h6>Choose Health Options:</h6>
               <HealthOptions />
