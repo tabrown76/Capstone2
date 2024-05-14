@@ -13,24 +13,24 @@ CREATE TABLE users (
 
 -- Table for recipes
 CREATE TABLE recipes (
-  uri PRIMARY KEY,
+  recipe_id TEXT PRIMARY KEY,
   label TEXT NOT NULL,
   image TEXT,
-  ingredients TEXT NOT NULL,
+  ingredients TEXT[] NOT NULL,
   url TEXT
 );
 
 -- Junction table for many-to-many relationship between users and recipes
 CREATE TABLE recipes_users (
   user_id INTEGER,
-  recipe_uri TEXT,
+  recipe_id TEXT,
   CONSTRAINT fk_user
     FOREIGN KEY(user_id) 
     REFERENCES users(user_id)
     ON DELETE CASCADE,
   CONSTRAINT fk_recipe
-    FOREIGN KEY(recipe_uri) 
-    REFERENCES recipes(uri)
+    FOREIGN KEY(recipe_id) 
+    REFERENCES recipes(recipe_id)
     ON DELETE CASCADE
 );
 
@@ -38,8 +38,8 @@ CREATE TABLE recipes_users (
 CREATE TABLE shopping_list (
   list_id SERIAL PRIMARY KEY,
   user_id INTEGER,
-  ingredient TEXT,
-  CONSTRAINT fk_user
+  ingredient TEXT[],
+  CONSTRAINT fk_user_shopping_list
     FOREIGN KEY(user_id) 
     REFERENCES users(user_id)
 );

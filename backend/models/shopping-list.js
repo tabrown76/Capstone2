@@ -3,75 +3,77 @@ const { BadRequestError, NotFoundError } = require("../expressError");
 
 class ShoppingList {
     /**
-     * Add ingredients from a specific recipe to the shopping list for a user.
+     * Add ingredients from a recipe to the user's shopping list.
      * 
      * @param {integer} user_id - The ID of the user.
-     * @param {string} uri - The URI of the recipe.
+     * @param {string} recipe_id - The URI of the recipe.
      * @returns The updated shopping list for the user.
      */
-    static async addRecipeIngredients(user_id, uri) {
+    static async addRecipeIngredients(user_id, recipe_id) {
         // Retrieve the recipe's ingredients
         const recipeRes = await db.query(
             `SELECT ingredients
              FROM recipes
-             WHERE uri = $1`,
-            [uri]
+             WHERE recipe_id = $1`,
+            [recipe_id]
         );
 
         const recipe = recipeRes.rows[0];
-        if (!recipe) throw new NotFoundError(`No recipe found with URI: ${uri}`);
+        if (!recipe) throw new NotFoundError(`No recipe found with URI: ${recipe_id}`);
 
-        // Assume ingredients are stored as a JSON string
-        const ingredients = JSON.parse(recipe.ingredients);
+        // Directly use the array of ingredients
+        const ingredients = recipe.ingredients;
 
-        // Insert each ingredient into the shopping list
-        ingredients.forEach(async ingredient => {
-            await db.query(
-                `INSERT INTO shopping_list (user_id, ingredient_text)
-                 VALUES ($1, $2)
-                 ON CONFLICT (user_id, ingredient_text) DO NOTHING`, // Avoid duplicates
-                [user_id, ingredient]
-            );
-        });
-
+        // Insert the array of ingredients
+        await db.query(
+            `INSERT INTO shopping_list (user_id, ingredients)
+             VALUES ($1, $2)
+             ON CONFLICT (user_id) DO UPDATE SET ingredients = shopping_list.ingredients || $2
+             WHERE NOT ($2 <@ shopping_list.ingredients)`,  // Append new ingredients not already in the list
+            [user_id, ingredients]
+        );
+    
         return this.getUserShoppingList(user_id);
     }
 
     /**
-     * Remove a specific ingredient from the shopping list of a user.
+     * Update the shopping list of a user by replacing it with a new list of ingredients.
      * 
      * @param {integer} user_id - The ID of the user.
-     * @param {string} ingredient_text - The text of the ingredient to remove.
+     * @param {array} ingredients - An array of the text of the ingredients to set as the new list.
      * @returns A confirmation message.
      */
-    static async removeIngredient(user_id, ingredient) {
-        const result = await db.query(
-            `DELETE FROM shopping_list
-             WHERE user_id = $1 AND ingredient = $2
-             RETURNING ingredient`,
-            [user_id, ingredient]
+    static async updateList(user_id, ingredients) {
+        await db.query(
+            `INSERT INTO shopping_list (user_id, ingredients)
+             VALUES ($1, $2)
+             ON CONFLICT (user_id) DO UPDATE
+             SET ingredients = $2`,
+            [user_id, ingredients]
         );
 
-        if (!result.rows[0]) throw new NotFoundError(`Ingredient not found in shopping list: ${ingredient}`);
-
-        return { message: "Ingredient removed from shopping list." };
+        return { message: "Shopping list updated successfully." };
     }
 
     /**
      * Retrieve the shopping list for a specific user.
      * 
      * @param {integer} user_id - The ID of the user.
-     * @returns The user's shopping list.
+     * @returns The user's shopping list as an array of ingredients.
      */
     static async getUserShoppingList(user_id) {
-        const results = await db.query(
-            `SELECT ingredient_text
+        const result = await db.query(
+            `SELECT ingredients
              FROM shopping_list
              WHERE user_id = $1`,
             [user_id]
         );
 
-        return results.rows.map(row => row.ingredient);
+        if (result.rows.length > 0) {
+            return result.rows[0].ingredients;
+        } else {
+            return [];
+        }
     }
 }
 

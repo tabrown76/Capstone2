@@ -8,30 +8,30 @@ const { BadRequestError, NotFoundError } = require("../expressError");
 class Recipe {
   /** Create a recipe (from data), update db, return new recipe data.
    *
-   * data should be { uri, label, image, ingredients, url }
+   * Data should be { recipe_id, label, image, ingredients, url }
    *
    * Returns { label, image, ingredients, url }
    *
    * Throws BadRequestError if recipe already in database.
    * */
 
-  static async create({ uri, label, image, ingredients, url }) {
+  static async createRecipe({ recipe_id, label, image, ingredients, url }) {
     const duplicateCheck = await db.query(
-          `SELECT uri
+          `SELECT recipe_id
            FROM recipes
-           WHERE uri = $1`,
-        [uri]);
+           WHERE recipe_id = $1`,
+        [recipe_id]);
 
     if (duplicateCheck.rows[0])
-      throw new BadRequestError(`Duplicate recipe: ${uri}`);
+      throw new BadRequestError(`Duplicate recipe: ${recipe_id}`);
 
     const result = await db.query(
           `INSERT INTO recipes
-           (uri, label, image, ingredients, url)
+           (recipe_id, label, image, ingredients, url)
            VALUES ($1, $2, $3, $4, $5)
            RETURNING label, image, ingredients, url"`,
         [
-          uri,
+          recipe_id,
           label,
           image,
           ingredients,
@@ -43,45 +43,28 @@ class Recipe {
     return recipe;
   }
 
-  /** Given a recipe uri, return data about recipe.
+  /** Given a recipe_id, return data about recipe.
    *
    * Returns { label, image, ingredients, url }
    *
    * Throws NotFoundError if not found.
    **/
 
-  static async get(uri) {
+  static async getRecipe(recipe_id) {
     const recipeRes = await db.query(
           `SELECT label,
                   image,
                   ingredients,
                   url
            FROM recipes
-           WHERE uri = $1`,
-        [uri]);
+           WHERE recipe_id = $1`,
+        [recipe_id]);
 
     const recipe = recipeRes.rows[0];
 
-    if (!recipe) throw new NotFoundError(`No recipe: ${uri}`);
+    if (!recipe) throw new NotFoundError(`No recipe: ${recipe_id}`);
 
     return recipe;
-  }
-
-  /** Delete given recipe from database; returns undefined.
-   *
-   * Throws NotFoundError if recipe not found.
-   **/
-
-  static async remove(uri) {
-    const result = await db.query(
-          `DELETE
-           FROM recipes
-           WHERE uri = $1
-           RETURNING uri`,
-        [uri]);
-    const recipe = result.rows[0];
-
-    if (!recipe) throw new NotFoundError(`No recipe: ${uri}`);
   }
 }
 

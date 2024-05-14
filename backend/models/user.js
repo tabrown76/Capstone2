@@ -16,7 +16,7 @@ const { BCRYPT_WORK_FACTOR } = require("../config.js");
 class User {
   /** authenticate user with username, password.
    *
-   * Returns { username, first_name, last_name, email }
+   * Returns { user_id, username, first_name, last_name, email }
    *
    * Throws UnauthorizedError is user not found or wrong password.
    **/
@@ -24,7 +24,8 @@ class User {
   static async authenticate(username, password) {
     // try to find the user first
     const result = await db.query(
-          `SELECT username,
+          `SELECT user_id,
+                  username,
                   password,
                   first_name AS "firstName",
                   last_name AS "lastName",
@@ -136,43 +137,44 @@ class User {
 
   /** Find all users.
    *
-   * Returns [{ username, first_name, last_name, email }, ...]
+   * Returns [{ user_id, first_name, last_name, email }, ...]
    **/
 
   static async findAll() {
     const result = await db.query(
-          `SELECT username,
+          `SELECT user_id,
                   first_name AS "firstName",
                   last_name AS "lastName",
                   email
            FROM users
-           ORDER BY username`,
+           ORDER BY user_id`,
     );
 
     return result.rows;
   }
 
-  /** Given a username, return data about user.
+  /** Given a user_id, return data about user.
    *
-   * Returns { username, first_name, last_name  }
+   * Returns { user_id, username, first_name, last_name, email  }
    *
    * Throws NotFoundError if user not found.
    **/
 
-  static async get(username) {
+  static async get(user_id) {
     const userRes = await db.query(
-          `SELECT username,
+          `SELECT user_id,
+                  username,
                   first_name AS "firstName",
                   last_name AS "lastName",
                   email
            FROM users
-           WHERE username = $1`,
-        [username],
+           WHERE user_id = $1`,
+        [user_id],
     );
 
     const user = userRes.rows[0];
 
-    if (!user) throw new NotFoundError(`No user: ${username}`);
+    if (!user) throw new NotFoundError(`No user: ${user_id}`);
 
     return user;
   }
@@ -194,7 +196,7 @@ class User {
    * or a serious security risks are opened.
    */
 
-  static async update(username, data) {
+  static async update(user_id, data) {
     if (data.password) {
       data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
     }
@@ -205,19 +207,19 @@ class User {
           firstName: "first_name",
           lastName: "last_name"
         });
-    const usernameVarIdx = "$" + (values.length + 1);
+    const useridVarIdx = "$" + (values.length + 1);
 
     const querySql = `UPDATE users 
                       SET ${setCols} 
-                      WHERE username = ${usernameVarIdx} 
-                      RETURNING username,
+                      WHERE username = ${useridVarIdx} 
+                      RETURNING user_id,
                                 first_name AS "firstName",
                                 last_name AS "lastName",
                                 email`;
-    const result = await db.query(querySql, [...values, username]);
+    const result = await db.query(querySql, [...values, user_id]);
     const user = result.rows[0];
 
-    if (!user) throw new NotFoundError(`No user: ${username}`);
+    if (!user) throw new NotFoundError(`No user: ${user_id}`);
 
     delete user.password;
     return user;
@@ -225,17 +227,17 @@ class User {
 
   /** Delete given user from database; returns undefined. */
 
-  static async remove(username) {
+  static async remove(user_id) {
     let result = await db.query(
           `DELETE
            FROM users
-           WHERE username = $1
-           RETURNING username`,
+           WHERE user_id = $1
+           RETURNING user_id`,
         [username],
     );
     const user = result.rows[0];
 
-    if (!user) throw new NotFoundError(`No user: ${username}`);
+    if (!user) throw new NotFoundError(`No user: ${user_id}`);
   }
 }
 

@@ -10,7 +10,7 @@ const { UnauthorizedError } = require("../expressError");
 /** Middleware: Authenticate user.
  *
  * If a token was provided, verify it, and, if valid, store the token payload
- * on res.locals (this will include the username field.)
+ * on res.locals (this will include the user_id field.)
  *
  * It's not an error if no token was provided or if the token is not valid.
  */
@@ -19,10 +19,8 @@ function authenticateJWT(req, res, next) {
   try {
     const authHeader = req.headers && req.headers.authorization;
     if (authHeader) {
-      console.log(`authHeader: ${authHeader}`)
       const token = authHeader.replace(/^[Bb]earer /, "").trim();
       res.locals.user = jwt.verify(token, SECRET_KEY);
-      console.log(`locals: ${res.locals.user}`)
     }
     return next();
   } catch (err) {
@@ -45,7 +43,7 @@ function ensureLoggedIn(req, res, next) {
 }
 
 /** Middleware to use when they must provide a valid token & be user matching
- *  username provided as route param.
+ *  user_id provided as route param.
  *
  *  If not, raises Unauthorized.
  */
@@ -53,7 +51,7 @@ function ensureLoggedIn(req, res, next) {
 function ensureCorrectUser(req, res, next) {
   try {
     const user = res.locals.user;
-    if (!(user && user.username === req.params.username)) {
+    if (!(user && user.user_id === +req.params.user_id)) {
       throw new UnauthorizedError();
     }
     return next();

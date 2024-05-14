@@ -13,16 +13,16 @@ const userUpdateSchema = require("../schemas/userUpdate.json");
 const router = express.Router();
 
 
-/** GET /[username] => { user }
+/** GET /[user_id] => { user }
  *
- * Returns { username, firstName, lastName }
+ * Returns { user_id, username, firstName, lastName, email }
  *
- * Authorization required: same user-as-:username
+ * Authorization required: same user-as-:user_id
  **/
 
-router.get("/:username", ensureCorrectUser, async function (req, res, next) {
+router.get("/:user_id", ensureCorrectUser, async function (req, res, next) {
   try {
-    const user = await User.get(req.params.username);
+    const user = await User.get(req.params.user_id);
     return res.json({ user });
   } catch (err) {
     return next(err);
@@ -30,17 +30,17 @@ router.get("/:username", ensureCorrectUser, async function (req, res, next) {
 });
 
 
-/** PATCH /[username] { user } => { user }
+/** PATCH /[user_id] { user } => { user }
  *
  * Data can include:
  *   { firstName, lastName, password }
  *
- * Returns { username, firstName, lastName, email }
+ * Returns { user_id, firstName, lastName, email }
  *
- * Authorization required: same-user-as-:username
+ * Authorization required: same-user-as-:user_id
  **/
 
-router.patch("/:username", ensureCorrectUser, async function (req, res, next) {
+router.patch("/:user_id", ensureCorrectUser, async function (req, res, next) {
   try {
     const validator = jsonschema.validate(req.body, userUpdateSchema);
     if (!validator.valid) {
@@ -48,7 +48,7 @@ router.patch("/:username", ensureCorrectUser, async function (req, res, next) {
       throw new BadRequestError(errs);
     }
 
-    const user = await User.update(req.params.username, req.body);
+    const user = await User.update(req.params.user_id, req.body);
     return res.json({ user });
   } catch (err) {
     return next(err);
@@ -56,15 +56,15 @@ router.patch("/:username", ensureCorrectUser, async function (req, res, next) {
 });
 
 
-/** DELETE /[username]  =>  { deleted: username }
+/** DELETE /[user_id]  =>  { deleted: user_id }
  *
- * Authorization required: same-user-as-:username
+ * Authorization required: same-user-as-:user_id
  **/
 
-router.delete("/:username", ensureCorrectUser, async function (req, res, next) {
+router.delete("/:user_id", ensureCorrectUser, async function (req, res, next) {
   try {
-    await User.remove(req.params.username);
-    return res.json({ deleted: req.params.username });
+    await User.remove(req.params.user_id);
+    return res.json({ deleted: req.params.user_id });
   } catch (err) {
     return next(err);
   }

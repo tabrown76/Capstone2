@@ -19,17 +19,19 @@ const Home = () => {
             <CardTitle className="CardTitle">
               Find new recipes! Maybe even make them...
             </CardTitle>
-            {user === null ? (<CardSubtitle className="CardSubtitle">
-              Sign up to filter results, create meal plans, and more!
-            </CardSubtitle>)
-            :
-            (<div>
-              <CardSubtitle className="CardSubtitle">
-                Search by ingredients to find your next meal!
-              </CardSubtitle>
-              <h6>Choose Health Options:</h6>
-              <HealthOptions />
-            </div>)}
+            {user && user.firstName ? 
+              (<div>
+                <CardSubtitle className="CardSubtitle">
+                  Search for specific ingredients to find your next meal idea!
+                </CardSubtitle>
+                <h6>Choose Health Options:</h6>
+                <HealthOptions />
+              </div>)
+              :
+              (<CardSubtitle className="CardSubtitle">
+                Sign up to filter results, create meal plans, and more!
+              </CardSubtitle>)
+            }
             <>
               <SearchBar />
               <Button onClick={() => apiTest()}>Test</Button>          

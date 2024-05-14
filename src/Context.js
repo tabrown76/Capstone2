@@ -119,11 +119,9 @@ export const ContextProvider = ({ children }) => {
     }
 
     const apiTest = () => {
-      // const token = localStorage.getItem('token');
-      // const decodedToken = jwtDecode(token);
-      // NewEatsApi.getUser(decodedToken.username);
-      logout();
-      console.log(`user: ${JSON.stringify(user)}`)
+      const token = localStorage.getItem('token');
+      const decodedToken = jwtDecode(token);
+      NewEatsApi.getUser(decodedToken.user_id);
     }
 
     return (
