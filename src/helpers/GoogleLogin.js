@@ -6,7 +6,7 @@ import { Context } from '../Context';
 
 function GoogleRegister() {  
     const navigate = useNavigate();
-    const { postRegistrationData } = useContext(Context);
+    const { login } = useContext(Context);
 
     function handleCredentialResponse(response) {
         const { credential } = response;
@@ -19,7 +19,7 @@ function GoogleRegister() {
               googleId: decoded.sub
             }
             
-            postRegistrationData(userData);
+            login(userData);
         } catch (error) {
             console.error('Failed to decode JWT:', error);
         }

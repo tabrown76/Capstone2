@@ -17,7 +17,8 @@ export default class NewEatsApi {
         : {};
 
     try {
-      return (await axios({ url, method, data, params, headers })).data;
+      const response = (await axios({ url, method, data, params, headers }));
+      return response; 
     } catch (err) {
       console.error("API Error:", err.message);
       let message = err.message;
@@ -30,85 +31,92 @@ export default class NewEatsApi {
   /** Register a user. */
   static async registerUser(data){
     let res = await this.request(`auth/register`, data, "post");
-    localStorage.setItem('token', res.token);
-    NewEatsApi.token = res.token;
-    return res.token;
+    localStorage.setItem('token', res.data.token);
+    NewEatsApi.token = res.data.token;
+    return res.data.token;
   }
 
-  /** Regist a user with Google. */
+  /** Register a user with Google. */
   static async googleRegister(data){
     let res = await this.request(`auth/googleregister`, data, "post");
-    localStorage.setItem('token', res.token);
-    NewEatsApi.token = res.token;
-    return res.token;
+    localStorage.setItem('token', res.data.token);
+    NewEatsApi.token = res.data.token;
+    return res.data.token;
   }
 
   /** Login validated user. */
   static async loginUser(data){
     let res = await this.request(`auth/token`, data, "post");
-    localStorage.setItem('token', res.token);
-    NewEatsApi.token = res.token;
-    return res.token;
+    localStorage.setItem('token', res.data.token);
+    NewEatsApi.token = res.data.token;
+    return res.data.token;
   }
 
   /** Get user info */
   static async getUser(user_id){
     let res = await this.request(`users/${user_id}`);
-    return res.user;
+    return res.data.user;
   }
 
   /** Update user profile */
   static async patchUser(user_id, data){
     let res = await this.request(`users/${user_id}`, data, "patch");
-    return res.user;
+    return res.data.user;
   }
 
   /** Delete user profile */
   static async deleteUser(user_id){
     let res = await this.request(`users/${user_id}`, "delete");
-    return res.deleted;
+    return res.data.deleted;
   }
 
   /** Get all recipes for user */
   static async getUsersRecipes(user_id){
     let res = await this.request(`recipes/${user_id}`);
-    return res.recipes;
+    return res.data.recipes;
   }
 
   /** Get recipe for user */
   static async getUserRecipe(user_id, recipe_id){
     let res = await this.request(`recipes/${user_id}/${recipe_id}`);
-    return res.recipe;
+    return res.data.recipe;
   }
 
   /** Associate user and recipe */
   static async postRecipeUser(user_id, recipe_id, data){
+    console.log(`postRecipeUser data: ${JSON.stringify(data)}`);
     let res = await this.request(`recipes/${user_id}/${recipe_id}`, data, "post");
-    return res.recipe;
+    return res.data.recipe;
   }
 
   /** Unassociate user and recipe */
   static async deleteRecipeUser(user_id, recipe_id){
     let res = await this.request(`recipes/${user_id}/${recipe_id}`, "delete");
-    return res.deleted;
+    return res.data.deleted;
   }
 
   /** Get shopping list for user */
   static async getShoppingList(user_id){
     let res = await this.request(`shopping/${user_id}`);
-    return res.list;
+    return res.data.list;
   }
 
   /** Create shopping list for user */
   static async createShoppingList(user_id, data){
     let res = await this.request(`shopping/${user_id}`, data, "post");
-    return res.list;
+    return res.data.list;
   }
 
   /** Update shopping list for user */
   static async updateShoppingList(user_id, data){
     let res = await this.request(`shopping/${user_id}`, data, "patch");
-    return res.list;
+    return res.data.list;
+  }
+
+  /** Check if url is valid */
+  static async checkRecipeUrl(data){
+    let res = await this.request(`recipes/check-url`, data);
+    return res.status;
   }
 }
 

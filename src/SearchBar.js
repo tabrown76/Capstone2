@@ -1,11 +1,13 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
 import { Context } from "./Context";
+import { APIContext } from "./APIContext";
 import { Button } from "reactstrap";
 import { cuisineTypeOptions } from './helpers/constants';
 import "./styles/SearchBar.css";
 
 const SearchBar = () => {
-    const {queryTerm, setQueryTerm, apiCall, user} = useContext(Context);
+    const {user} = useContext(Context);
+    const {queryTerm, setQueryTerm, apiCall} = useContext(APIContext);
     const [cuisineType, setCuisineType] = useState('');
     const [recentSearches, setRecentSearches] = useState([]);
     const [showRecentSearches, setShowRecentSearches] = useState(false);

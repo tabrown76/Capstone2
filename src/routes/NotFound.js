@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { Card, CardBody, CardTitle, Button } from "reactstrap";
 import { useNavigate } from "react-router-dom";
-import { Context } from "../Context";
+import { APIContext } from "../APIContext";
 
 function NotFound() {
   const navigate = useNavigate();
-  const { tooManyFilters } = useContext(Context);
+  const { tooManyFilters } = useContext(APIContext);
 
   return (
     <section className="col-md-8">

@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useRef } from "react";
 import { Button } from "reactstrap";
 import { Context } from "./Context";
+import { APIContext } from "./APIContext";
+import NewEatsApi from "./Api";
 import "./styles/RecipeModal.css";
 
 const RecipeModal = () => {
-    // if (!recipeData) return null;
-    const { recipeData, closeModal, apiCall, user, queryTerm } = useContext(Context);
+    const { user } = useContext(Context);
+    const { apiCall, recipeData, closeModal } = useContext(APIContext);
     const modalContentRef = useRef(null);
 
     const handleKeyDown = (e) => {
@@ -24,15 +26,25 @@ const RecipeModal = () => {
         };
     })
 
-    const handleNext = () => {
-        console.log(`queryTerm: ${queryTerm}`);
-        apiCall();
-    
-        // Scroll the modal content back to the top
+    const modalReset = () => {
         if (modalContentRef.current) {
             modalContentRef.current.scrollTop = 0;
         }
-    }    
+    }
+
+    const handleNext = () => {
+        apiCall();
+        modalReset();
+    }   
+    
+    const handleAdd = () => {
+        const { uri } = recipeData;
+        const recipeId = uri.match(/recipe_(.+)/)[1];
+        const withRecipeId = {...recipeData, recipe_id: recipeId}
+
+        NewEatsApi.postRecipeUser(user.user_id, recipeId, withRecipeId);
+        modalReset();
+    }
 
     // Prevent modal content click from closing the modal
     const stopPropagation = (e) => e.stopPropagation();
@@ -55,7 +67,7 @@ const RecipeModal = () => {
             <a href={recipeData.url} target="_blank" rel="noopener noreferrer" className="Button btn btn-secondary">
                 Make This!
             </a>
-            {user?.firstName && <Button className="Button" >Add to Meal Plan</Button>}
+            {user?.firstName && <Button className="Button" onClick={handleAdd}>Add to Meal Plan</Button>}
             <Button className="Button" onClick={handleNext}>Next</Button>
         </div>
       </div>

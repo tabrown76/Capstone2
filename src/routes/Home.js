@@ -3,12 +3,14 @@ import { Card, CardBody, CardTitle, CardSubtitle, Button } from "reactstrap";
 import SearchBar from "../SearchBar";
 import RecipeModal from "../RecipeModal";
 import { Context } from "../Context";
+import { APIContext } from "../APIContext";
 import HealthOptions from "../HealthOptions";
 import "../styles/Home.css";
 import CarouselBackground from "../Carousel";
 
 const Home = () => {
-  const { isModalVisible, user, apiTest } = useContext(Context); 
+  const { user, apiTest } = useContext(Context); 
+  const { isModalVisible } = useContext(APIContext); 
 
   return (
     <div className="home-container">

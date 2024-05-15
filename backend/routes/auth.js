@@ -10,10 +10,11 @@ const router = new express.Router();
 const { createToken } = require("../helpers/tokens");
 const userAuthSchema = require("../schemas/userAuth.json");
 const userRegisterSchema = require("../schemas/userRegister.json");
-const userGoogleRegisterSchema = require("../schemas/userGoogleRegister.json");
+const userGoogleSchema = require("../schemas/userGoogle.json");
 const { BadRequestError } = require("../expressError");
+const { json } = require("react-router-dom");
 
-/** POST /auth/token:  { username, password } => { token }
+/** POST /auth/token:  { (username, password) || googleId } => { token }
  *
  * Returns JWT token which can be used to authenticate further requests.
  *
@@ -22,21 +23,31 @@ const { BadRequestError } = require("../expressError");
 
 router.post("/token", async function (req, res, next) {
   try {
-    const validator = jsonschema.validate(req.body, userAuthSchema);
+    const { username, password, googleId } = req.body;
+
+    // Validate the request body based on the presence of googleId
+    const validator = googleId ?
+      jsonschema.validate(req.body, userGoogleSchema) :
+      jsonschema.validate(req.body, userAuthSchema);
+
     if (!validator.valid) {
       const errs = validator.errors.map(e => e.stack);
       throw new BadRequestError(errs);
     }
 
-    const { username, password } = req.body;
-    const user = await User.authenticate(username, password);
+    let user;
+    if (googleId) {
+      user = await User.authenticateWithGoogle(googleId);
+    } else {
+      user = await User.authenticate(username, password);
+    }
+
     const token = createToken(user);
     return res.json({ token });
   } catch (err) {
     return next(err);
   }
-});
-
+})
 
 /** POST /auth/register:   { user } => { token }
  *
@@ -74,7 +85,7 @@ router.post("/register", async function (req, res, next) {
 
 router.post("/googleregister", async function (req, res, next) {
   try {
-    const validator = jsonschema.validate(req.body, userGoogleRegisterSchema);
+    const validator = jsonschema.validate(req.body, userGoogleSchema);
     if (!validator.valid) {
       const errs = validator.errors.map(e => e.stack);
       throw new BadRequestError(errs);

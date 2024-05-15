@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import {Context} from "../Context";
+import GoogleLogin from "../helpers/GoogleLogin";
 import "../styles/Forms.css"
 
 const LoginForm = () => {
@@ -34,6 +35,11 @@ const LoginForm = () => {
     return (
         <>
             <Form className="card" onSubmit={handleSubmit}>
+              <div>
+                <header className="signup-header">
+                  <GoogleLogin />
+                </header>
+              </div>
               <FormGroup>
                 <Label for="username" >Username</Label>
                 <Input 

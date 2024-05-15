@@ -4,11 +4,32 @@
 
 const jsonschema = require("jsonschema");
 const express = require("express");
+const axios = require("axios");
 const { ensureCorrectUser } = require("../middleware/auth");
 const { BadRequestError } = require("../expressError");
 const Recipe = require("../models/recipe");
 const RecipesUsers = require("../models/recipes-users");
 const router = express.Router();
+
+/**
+ * GET route to check the accessibility of a URL.
+ * Expects a URL as a query parameter and checks if it is reachable.
+ * @param {string} url - The URL to check, provided as a query parameter.
+ * @return {object} - Returns an object with the status of the check and any relevant HTTP status code.
+ */
+router.get('/check-url', async (req, res) => {
+  const url = req.query.url;
+  if (!url) {
+      throw new BadRequestError('URL parameter is required.');
+  }
+  try {
+      await axios.head(url);
+      res.sendStatus(200);
+  } catch (error) {
+    console.error(`Error checking URL: ${error.message}`);
+    res.status(500).send({ status: 'URL is not working', error: error.message });
+  }
+})
 
 /**
  * GET /:user_id => { recipes }
@@ -77,7 +98,7 @@ router.post("/:user_id/:recipe_id", ensureCorrectUser, async function (req, res,
     if (isNaN(userId)) {
       throw new BadRequestError("Invalid user ID.");
     }
-
+    console.log(`recipe data: ${JSON.stringify(req.body)}`)
     const createRecipePromise = Recipe.createRecipe(req.body);
     const addToUserPromise = RecipesUsers.addToUser(req.params.recipe_id, userId);
 

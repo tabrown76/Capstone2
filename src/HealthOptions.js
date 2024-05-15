@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import HealthOptionCheckbox from "./Checkbox";
-import { Context } from "./Context";
+import { APIContext } from "./APIContext";
 import { healthOptions } from "./helpers/constants";
 import "./styles/HealthOptions.css";
 
 function HealthOptions(){
-    const { handleCheckboxChange, selectedOptions } = useContext(Context);
+    const { handleCheckboxChange, selectedOptions } = useContext(APIContext);
 
     return(
         <div className="health-options">

@@ -49,6 +49,36 @@ class User {
     throw new UnauthorizedError("Invalid username/password");
   }
 
+  /**
+   * Authenticate user with Google ID.
+   *
+   * Returns { user_id, username, firstName, lastName, email }
+   *
+   * Throws UnauthorizedError if user not found.
+   **/
+  static async authenticateWithGoogle(googleId) {
+    // Try to find the user by Google ID
+    const result = await db.query(
+          `SELECT user_id,
+                  username,
+                  first_name AS "firstName",
+                  last_name AS "lastName",
+                  email
+           FROM users
+           WHERE google_id = $1`,
+        [googleId],
+    );
+
+    const user = result.rows[0];
+
+    if (user) {
+      return user;
+    }
+
+    throw new UnauthorizedError("Invalid Google ID");
+  }
+
+
   /** Register user with data.
    *
    * Returns { username, firstName, lastName, email }

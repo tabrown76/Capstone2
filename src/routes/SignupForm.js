@@ -7,7 +7,7 @@ import "../styles/Forms.css"
 
 const SignupForm = () => {
     const navigate = useNavigate();
-    const {postData} = useContext(Context);
+    const {postRegistrationData} = useContext(Context);
 
     const [formData, setFormData] = useState({
         username: '',
@@ -27,7 +27,7 @@ const SignupForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        postData(formData);
+        postRegistrationData(formData);
         console.log(formData);
         setFormData({
             username: '',
