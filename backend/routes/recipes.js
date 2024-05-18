@@ -98,10 +98,9 @@ router.post("/:user_id/:recipe_id", ensureCorrectUser, async function (req, res,
     if (isNaN(userId)) {
       throw new BadRequestError("Invalid user ID.");
     }
-    console.log(`recipe data: ${JSON.stringify(req.body)}`)
+
     const createRecipePromise = Recipe.createRecipe(req.body);
     const addToUserPromise = RecipesUsers.addToUser(req.params.recipe_id, userId);
-
     const [recipe, relationship] = await Promise.all([createRecipePromise, addToUserPromise]);
 
     return res.json({ recipe });

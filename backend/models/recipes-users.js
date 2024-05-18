@@ -73,7 +73,7 @@ class RecipesUsers {
       label: row.label,
       image: row.image,
       ingredients: row.ingredients,
-      urL: row.url
+      url: row.url
     }));
   }  
 }

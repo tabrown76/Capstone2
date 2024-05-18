@@ -71,7 +71,7 @@ export default class NewEatsApi {
   }
 
   /** Get all recipes for user */
-  static async getUsersRecipes(user_id){
+  static async getUserRecipes(user_id){
     let res = await this.request(`recipes/${user_id}`);
     return res.data.recipes;
   }

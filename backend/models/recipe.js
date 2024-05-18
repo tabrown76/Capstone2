@@ -16,26 +16,38 @@ class Recipe {
    * */
 
   static async createRecipe({ recipe_id, label, image, ingredients, url }) {
+    const sanitize = (str) => str.replace(/"/g, '\\"');
+    const fieldsToSanitize = { recipe_id, label, image, url };
+    const sanitizedFields = {};
+
+    Object.keys(fieldsToSanitize).forEach((key) => {
+      sanitizedFields[key] = sanitize(fieldsToSanitize[key]);
+    });
+
+    const sanitizedIngredients = JSON.stringify(ingredients).replace(/"/g, '\\"');
+
     const duplicateCheck = await db.query(
           `SELECT recipe_id
            FROM recipes
            WHERE recipe_id = $1`,
         [recipe_id]);
 
-    if (duplicateCheck.rows[0])
-      throw new BadRequestError(`Duplicate recipe: ${recipe_id}`);
+    if (duplicateCheck.rows[0]){
+      return [sanitizedFields.label, sanitizedFields.image, sanitizedIngredients, sanitizedFields.url];
+    }
+      
 
     const result = await db.query(
           `INSERT INTO recipes
            (recipe_id, label, image, ingredients, url)
            VALUES ($1, $2, $3, $4, $5)
-           RETURNING label, image, ingredients, url"`,
+           RETURNING label, image, ingredients, url`,
         [
-          recipe_id,
-          label,
-          image,
+          sanitizedFields.recipe_id,
+          sanitizedFields.label,
+          sanitizedFields.image,
           ingredients,
-          url
+          sanitizedFields.url
         ],
     );
     const recipe = result.rows[0];

@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import HealthOptionCheckbox from "./Checkbox";
-import { APIContext } from "./APIContext";
-import { healthOptions } from "./helpers/constants";
-import "./styles/HealthOptions.css";
+import { APIContext } from "../contexts/APIContext";
+import { healthOptions } from "../helpers/constants";
+import "../styles/HealthOptions.css";
 
 function HealthOptions(){
     const { handleCheckboxChange, selectedOptions } = useContext(APIContext);

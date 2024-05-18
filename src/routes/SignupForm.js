@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import {Context} from "../Context";
+import {Context} from "../contexts/Context";
 import GoogleRegister from "../helpers/GoogleRegister";
 import "../styles/Forms.css"
 

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Card, CardBody, CardTitle, Button } from "reactstrap";
 import { useNavigate } from "react-router-dom";
-import { APIContext } from "../APIContext";
+import { APIContext } from "../contexts/APIContext";
 
 function NotFound() {
   const navigate = useNavigate();

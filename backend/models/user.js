@@ -109,7 +109,7 @@ class User {
             last_name,
             email)
            VALUES ($1, $2, $3, $4, $5)
-           RETURNING username, first_name AS "firstName", last_name AS "lastName", email`,
+           RETURNING user_id, username, first_name AS "firstName", last_name AS "lastName", email`,
         [
           username,
           hashedPassword,
@@ -151,7 +151,7 @@ class User {
             email,
             google_id)
            VALUES ($1, $2, $3, $4)
-           RETURNING first_name AS "firstName", last_name AS "lastName", email, google_id AS "googleId"`,
+           RETURNING user_id, first_name AS "firstName", last_name AS "lastName", email, google_id AS "googleId"`,
         [
           firstName,
           lastName,

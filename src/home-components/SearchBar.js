@@ -1,9 +1,9 @@
 import React, { useContext, useState, useRef, useEffect } from "react";
-import { Context } from "./Context";
-import { APIContext } from "./APIContext";
+import { Context } from "../contexts/Context";
+import { APIContext } from "../contexts/APIContext";
 import { Button } from "reactstrap";
-import { cuisineTypeOptions } from './helpers/constants';
-import "./styles/SearchBar.css";
+import { cuisineTypeOptions } from '../helpers/constants';
+import "../styles/SearchBar.css";
 
 const SearchBar = () => {
     const {user} = useContext(Context);

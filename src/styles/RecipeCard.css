@@ -1,0 +1,34 @@
+/* RecipeCard.css */
+
+/* Styling for the list container */
+ul.recipe-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 1rem;
+    width: 30%; 
+    float: right; 
+}
+
+/* Styling for each recipe card */
+li.recipe-card {
+    background-color: #f9f9f9; 
+    border: 1px solid #ccc; 
+    border-radius: 8px; 
+    padding: 10px; 
+    margin-bottom: 10px; 
+    width: 90%; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for the recipe title */
+li.recipe-card h3 {
+    font-size: 1em; 
+    margin: 0 0 10px 0; 
+}
+
+/* Styling for the recipe image */
+li.recipe-card img {
+    width: auto; 
+    height: 5rem; 
+    border-radius: 4px; 
+}

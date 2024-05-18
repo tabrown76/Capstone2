@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {jwtDecode} from "jwt-decode";
-import NewEatsApi from './Api';
+import NewEatsApi from '../Api';
 
 export const Context = createContext();
 
@@ -16,6 +16,8 @@ export const ContextProvider = ({ children }) => {
       if (token) {
           const decodedToken = jwtDecode(token);
           setUser(decodedToken);
+          setToken(token);
+          NewEatsApi.token = token;
       }
     }, []);
 
@@ -29,6 +31,7 @@ export const ContextProvider = ({ children }) => {
 
           setToken(token);
           localStorage.setItem('token', token);
+          NewEatsApi.token = token;
           setUser(decodedToken);
           setIsLoading(false);
       } catch(e) {
@@ -44,6 +47,7 @@ export const ContextProvider = ({ children }) => {
 
           setToken(token);
           localStorage.setItem('token', token);
+          NewEatsApi.token = token;
           setUser(decodedToken)
           setIsLoading(false);
       } catch(e) {
@@ -56,16 +60,23 @@ export const ContextProvider = ({ children }) => {
     
     const logout = () => {
       setToken("");
+      NewEatsApi.token = "";
       localStorage.clear();
       setUser({});
       navigate('/');
     }
 
-    const apiTest = () => {
+    const apiTest = async () => {
       // const token = localStorage.getItem('token');
       // const decodedToken = jwtDecode(token);
       // NewEatsApi.getUser(decodedToken.user_id);
-      console.log(`user: ${JSON.stringify(user)}`)
+      try{
+        const recipes = await NewEatsApi.getUserRecipes(user.user_id);
+        console.log(JSON.stringify(recipes));
+        recipes.map(recipe => {console.log(`recipe.map: ${JSON.stringify(recipe)}`)});
+      } catch(e){
+        console.error(`apiTest Error: ${e}`)
+      }
     }
 
     return (

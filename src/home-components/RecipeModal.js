@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useRef } from "react";
 import { Button } from "reactstrap";
-import { Context } from "./Context";
-import { APIContext } from "./APIContext";
-import NewEatsApi from "./Api";
-import "./styles/RecipeModal.css";
+import { Context } from "../contexts/Context";
+import { APIContext } from "../contexts/APIContext";
+import NewEatsApi from "../Api";
+import "../styles/RecipeModal.css";
 
 const RecipeModal = () => {
     const { user } = useContext(Context);
@@ -59,7 +59,7 @@ const RecipeModal = () => {
                 <ul>
                     {recipeData.ingredients.map((ingredientObject, index) =>
                         <li key={index}>
-                            {ingredientObject.text}
+                            {ingredientObject}
                         </li>
                     )}
                 </ul>

@@ -1,9 +1,9 @@
 import React from 'react';
 import Slider from 'react-slick';
-import deliciousFood from "./static/delicious-food.jpg";
-import healthyFood from "./static/healthy-food.jpg";
-import sandwich from "./static/sandwich.jpg";
-import "./styles/Carousel.css";
+import deliciousFood from "../static/delicious-food.jpg";
+import healthyFood from "../static/healthy-food.jpg";
+import sandwich from "../static/sandwich.jpg";
+import "../styles/Carousel.css";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 

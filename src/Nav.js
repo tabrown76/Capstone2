@@ -11,7 +11,7 @@ import {
   DropdownMenu,
   DropdownItem, 
   NavItem} from 'reactstrap';
-import {Context} from "./Context";
+import {Context} from "./contexts/Context";
 import favicon from "./static/favicon.jpg";
 import "./styles/Nav.css";
 
@@ -41,7 +41,10 @@ const RecipeNav = () => {
                     </DropdownToggle>
                     <DropdownMenu className="custom-dropdown-menu"  end dark>
                       <DropdownItem>
-                        <NavLink href="">Meal Planning</NavLink>
+                        <NavLink href={"/"}>Home</NavLink>
+                      </DropdownItem>
+                      <DropdownItem>
+                        <NavLink href={`/${user.user_id}/mealplan`}>Meal Planning</NavLink>
                       </DropdownItem>
                       <DropdownItem>
                         <NavLink href="">Shopping List</NavLink>

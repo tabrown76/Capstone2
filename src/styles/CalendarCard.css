@@ -1,0 +1,36 @@
+/* General reset and styling for the list */
+ul.calendar-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 1rem;
+    width: 60%; 
+    float: left; 
+}
+
+li.calendar-card-li {
+    background-color: #f0f0f0; 
+    border: 1px solid #ccc; 
+    border-radius: 8px; 
+    padding: 20px; 
+    margin-bottom: 20px; 
+    position: relative; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for the date */
+li.calendar-card-li span {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-weight: bold; 
+    font-size: 1.2em; 
+}
+
+/* Blank area for other content */
+li.calendar-card-li::after {
+    content: ""; /* Empty content for the blank area */
+    display: block; /* Block display to take up space */
+    height: 80px; /* Height for the blank area */
+    background-color: #e0e0e0; /* Light gray background for the blank area */
+    margin-top: 15px; /* Space between the date and the blank area */
+}

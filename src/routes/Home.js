@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import { Card, CardBody, CardTitle, CardSubtitle, Button } from "reactstrap";
-import SearchBar from "../SearchBar";
-import RecipeModal from "../RecipeModal";
-import { Context } from "../Context";
-import { APIContext } from "../APIContext";
-import HealthOptions from "../HealthOptions";
+import SearchBar from "../home-components/SearchBar";
+import RecipeModal from "../home-components/RecipeModal";
+import { Context } from "../contexts/Context";
+import { APIContext } from "../contexts/APIContext";
+import HealthOptions from "../home-components/HealthOptions";
 import "../styles/Home.css";
-import CarouselBackground from "../Carousel";
+import CarouselBackground from "../home-components/Carousel";
 
 const Home = () => {
   const { user, apiTest } = useContext(Context); 
