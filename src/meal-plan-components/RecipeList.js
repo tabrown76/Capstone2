@@ -1,24 +1,20 @@
 import React, { useContext } from 'react';
-import { Droppable } from 'react-beautiful-dnd';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { MealContext } from '../contexts/MealContext';
 import RecipeCard from './RecipeCard';
-import "../styles/RecipeList.css";
 
 const RecipeList = () => {
   const { value } = useContext(MealContext);
   const {recipeList} = value;
 
   return (
-    <Droppable droppableId="recipesDroppable">
-      {(provided) => (
-        <ul className="recipe-list" ref={provided.innerRef} {...provided.droppableProps}>
-          {recipeList && recipeList.map((recipe, index) => (
-            <RecipeCard key={recipe.id} recipe={recipe} index={index} />
-          ))}
-          {provided.placeholder}
-        </ul>
-      )}
-    </Droppable>
+    <ul className="recipe-list" >
+      <SortableContext items={recipeList.map(recipe => recipe.id)} strategy={verticalListSortingStrategy}>
+        {recipeList && recipeList.map((recipe) => (
+          <RecipeCard key={recipe.id} recipe={recipe} id={recipe.id} />
+        ))} 
+      </SortableContext>
+    </ul>
   )
 }
 

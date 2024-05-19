@@ -1,28 +1,43 @@
 import React, { useContext } from 'react';
-import { DragDropContext} from 'react-beautiful-dnd';
+import { DndContext, closestCorners } from '@dnd-kit/core';
 import { MealContext } from '../contexts/MealContext';
 import CalendarView from './CalendarView';
 import RecipeList from './RecipeList';
+import { arrayMove } from '@dnd-kit/sortable';
+import "../styles/MealPlanner.css";
 
 const MealPlanner = () => {
   const { value } = useContext(MealContext);
   const { recipeList, setRecipeList } = value;
 
-  const onDragEnd = (result) => {
-    if (!result.destination) return;
+  const getRecipePos = id => recipeList.findIndex(recipe =>
+    recipe.id === id
+  )
 
-    const items = Array.from(recipeList);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
+  const handleDragEnd = e => {
+    const { active, over } = e;
 
-    setRecipeList(items);
-  };
+    if (!over || active.id === over.id) return;
 
+    setRecipeList(recipeList => {
+      const originalPos = getRecipePos(active.id);
+      const newPos = getRecipePos(over.id);
+
+      return arrayMove(recipeList, originalPos, newPos);
+    })
+  }
+ 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <CalendarView />
-      <RecipeList />
-    </DragDropContext>   
+    <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
+      <div className='meal-planner-container'>
+        <div className='meal-planner-section calendar-view-section'>
+          <CalendarView />
+        </div>
+        <div className='meal-planner-section recipe-list-section'>
+          <RecipeList />
+        </div>
+      </div>
+    </DndContext>   
   );
 };
 

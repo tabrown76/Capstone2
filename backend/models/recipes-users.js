@@ -39,7 +39,7 @@ class RecipesUsers {
    *
    * Throws NotFoundError if recipe-user relationship not found.
    **/
-  static async removeFromUser( recipe_id, user_id ) {
+  static async removeFromUser( user_id, recipe_id ) {
     const result = await db.query(
       `DELETE FROM recipes_users
        WHERE recipe_id = $1 AND user_id = $2

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Droppable } from 'react-beautiful-dnd';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import CalendarCard from './CalendarCard';
 
 const CalendarView = () => {
@@ -29,16 +29,13 @@ const CalendarView = () => {
   }, [])
 
   return (
-    <Droppable droppableId="calendarDroppable">
-      {(provided) => (
-        <ul className="calendar-list" ref={provided.innerRef} {...provided.droppableProps}>
-          {weekList.map((weekDay, index) => {
-            return <CalendarCard key={weekDay.id} date={weekDay} index={index}/>;
-          })}
-          {provided.placeholder}
-        </ul>
-      )}
-    </Droppable>
+    <ul className="calendar-list" >
+      <SortableContext items={weekList.map(day => day.id)} strategy={verticalListSortingStrategy}>
+        {weekList.map((weekDay) => {
+          return <CalendarCard key={weekDay.id} date={weekDay} id={weekDay.id}/>;
+        })}
+      </SortableContext>
+    </ul>
   );
 };
 

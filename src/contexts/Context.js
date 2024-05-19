@@ -70,13 +70,13 @@ export const ContextProvider = ({ children }) => {
       // const token = localStorage.getItem('token');
       // const decodedToken = jwtDecode(token);
       // NewEatsApi.getUser(decodedToken.user_id);
-      try{
-        const recipes = await NewEatsApi.getUserRecipes(user.user_id);
-        console.log(JSON.stringify(recipes));
-        recipes.map(recipe => {console.log(`recipe.map: ${JSON.stringify(recipe)}`)});
-      } catch(e){
-        console.error(`apiTest Error: ${e}`)
-      }
+      // try{
+      //   const recipes = await NewEatsApi.getUserRecipes(user.user_id);
+      //   console.log(JSON.stringify(recipes));
+      //   recipes.map(recipe => {console.log(`recipe.map: ${JSON.stringify(recipe)}`)});
+      // } catch(e){
+      //   console.error(`apiTest Error: ${e}`)
+      // }
     }
 
     return (

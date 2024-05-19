@@ -35,9 +35,19 @@ export const MealContextProvider = ({ children }) => {
         setRecipeList
     }), [recipeList])
 
+    const handleClick = async(recipeId) => {
+        try{
+          await NewEatsApi.deleteRecipeUser(user.user_id, recipeId);
+          setRecipeList((prevRecipes) => prevRecipes.filter(recipe => recipe.id !== recipeId));
+        } catch(e){
+          console.error(`Error removing recipe: ${e}`)
+        }
+    }
+
     return (
         <MealContext.Provider value={{ 
-            value
+            value,
+            handleClick
         }}>
             {children}
         </MealContext.Provider>

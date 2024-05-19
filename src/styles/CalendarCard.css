@@ -2,9 +2,8 @@
 ul.calendar-list {
     list-style-type: none;
     padding: 0;
-    margin: 1rem;
-    width: 60%; 
-    float: left; 
+    margin: 1rem auto;
+    width: 80%; 
 }
 
 li.calendar-card-li {
@@ -28,9 +27,9 @@ li.calendar-card-li span {
 
 /* Blank area for other content */
 li.calendar-card-li::after {
-    content: ""; /* Empty content for the blank area */
-    display: block; /* Block display to take up space */
-    height: 80px; /* Height for the blank area */
-    background-color: #e0e0e0; /* Light gray background for the blank area */
-    margin-top: 15px; /* Space between the date and the blank area */
+    content: ""; 
+    display: block; 
+    height: 80px; 
+    background-color: #e0e0e0; 
+    margin-top: 15px; 
 }

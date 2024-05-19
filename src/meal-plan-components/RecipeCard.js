@@ -1,22 +1,40 @@
-import React from 'react';
-import { Draggable } from 'react-beautiful-dnd';
+import React, { useContext } from 'react';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { MealContext } from '../contexts/MealContext';
 import "../styles/RecipeCard.css";
 
-const RecipeCard = ({ recipe, index }) => {
+const RecipeCard = ({ recipe, id }) => {
+  const {attributes, listeners, setNodeRef, transform, transition, isDragging} = useSortable({id});
+  const {handleClick} = useContext(MealContext);
+
+  const style = {
+    transition,
+    transform: CSS.Transform.toString(transform)
+    // pointerEvents: isDragging ? 'none' : 'auto'
+  }
+
+  const handleIconClick = () => {
+    console.log('Close icon clicked', recipe.id);
+    if(!isDragging){
+      handleClick(recipe.id);
+    }
+  };
+
   return (
-    <Draggable key={recipe.id} draggableId={recipe.id} index={index}>
-      {(provided) => (
-        <li
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          className="recipe-card"
-        >
-          <h3>{recipe.label}</h3>
-          <img src={recipe.image} alt={recipe.label} />
-        </li>
-      )}
-    </Draggable>
+    <>
+      <li
+        ref={setNodeRef}
+        {...attributes}
+        {...listeners}
+        style={style}
+        className="recipe-card"
+      >
+        <div className="close-icon" onClick={handleIconClick}>&times;</div>
+        <h3>{recipe.label}</h3>
+        <img src={recipe.image} alt={recipe.label} />
+      </li>
+    </>
   );
 };
 

@@ -5,12 +5,13 @@ ul.recipe-list {
     list-style-type: none;
     padding: 0;
     margin: 1rem;
-    width: 30%; 
+    width: auto; 
     float: right; 
 }
 
 /* Styling for each recipe card */
 li.recipe-card {
+    position: relative;
     background-color: #f9f9f9; 
     border: 1px solid #ccc; 
     border-radius: 8px; 
@@ -18,12 +19,16 @@ li.recipe-card {
     margin-bottom: 10px; 
     width: 90%; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
 }
 
 /* Styling for the recipe title */
 li.recipe-card h3 {
     font-size: 1em; 
     margin: 0 0 10px 0; 
+    flex: 1;
+    text-align: center;
 }
 
 /* Styling for the recipe image */
@@ -31,4 +36,6 @@ li.recipe-card img {
     width: auto; 
     height: 5rem; 
     border-radius: 4px; 
+    margin-right: 10px;
+    order: -1;
 }

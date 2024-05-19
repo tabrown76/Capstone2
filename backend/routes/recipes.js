@@ -125,7 +125,7 @@ router.delete("/:user_id/:recipe_id", ensureCorrectUser, async function (req, re
       throw new BadRequestError("Invalid user ID.");
     }
 
-    await RecipesUsers.removeFromUser(req.params.recipe_id, userId);
+    await RecipesUsers.removeFromUser(userId, req.params.recipe_id);
     return res.json({ deleted: req.params.recipe_id });
   } catch (err) {
     return next(err);

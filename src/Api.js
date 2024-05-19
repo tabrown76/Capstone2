@@ -91,7 +91,7 @@ export default class NewEatsApi {
 
   /** Unassociate user and recipe */
   static async deleteRecipeUser(user_id, recipe_id){
-    let res = await this.request(`recipes/${user_id}/${recipe_id}`, "delete");
+    let res = await this.request(`recipes/${user_id}/${recipe_id}`, {}, "delete");
     return res.data.deleted;
   }
 
