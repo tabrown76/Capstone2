@@ -4,6 +4,15 @@ import { APIContext } from "../contexts/APIContext";
 import { healthOptions } from "../helpers/constants";
 import "../styles/HealthOptions.css";
 
+/**
+ * HealthOptions component that renders a list of health option checkboxes.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <HealthOptions />
+ * )
+ */
 function HealthOptions(){
     const { handleCheckboxChange, selectedOptions } = useContext(APIContext);
 

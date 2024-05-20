@@ -5,6 +5,17 @@ import NewEatsApi from '../Api';
 
 export const Context = createContext();
 
+/**
+ * ContextProvider component that provides global state and context to its children.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <ContextProvider>
+ *     <App />
+ *   </ContextProvider>
+ * )
+ */
 export const ContextProvider = ({ children }) => {
     const [token, setToken] = useState("");
     const [user, setUser] = useState({});
@@ -21,6 +32,12 @@ export const ContextProvider = ({ children }) => {
       }
     }, []);
 
+    /**
+   * Handles user registration.
+   * 
+   * @async
+   * @param {Object} formData - The form data for registration.
+   */
     const postRegistrationData = async(formData) => {
       try {
           setIsLoading(true);
@@ -39,6 +56,12 @@ export const ContextProvider = ({ children }) => {
       }
     }
 
+    /**
+   * Handles user login.
+   * 
+   * @async
+   * @param {Object} formData - The form data for login.
+   */
     const login = async(formData) => {
       try {
           setIsLoading(true);
@@ -58,25 +81,15 @@ export const ContextProvider = ({ children }) => {
       }
     }
     
+    /**
+   * Handles user logout.
+   */
     const logout = () => {
       setToken("");
       NewEatsApi.token = "";
       localStorage.clear();
       setUser({});
       navigate('/');
-    }
-
-    const apiTest = async () => {
-      // const token = localStorage.getItem('token');
-      // const decodedToken = jwtDecode(token);
-      // NewEatsApi.getUser(decodedToken.user_id);
-      // try{
-      //   const recipes = await NewEatsApi.getUserRecipes(user.user_id);
-      //   console.log(JSON.stringify(recipes));
-      //   recipes.map(recipe => {console.log(`recipe.map: ${JSON.stringify(recipe)}`)});
-      // } catch(e){
-      //   console.error(`apiTest Error: ${e}`)
-      // }
     }
 
     return (
@@ -87,8 +100,7 @@ export const ContextProvider = ({ children }) => {
             postRegistrationData,
             login,
             logout,
-            token,
-            apiTest
+            token
         }}>
             {children}
         </Context.Provider>

@@ -6,15 +6,24 @@ const { BadRequestError, NotFoundError } = require("../expressError");
 /** Related functions for recipes. */
 
 class Recipe {
-  /** Create a recipe (from data), update db, return new recipe data.
+  /**
+   * Create a recipe (from data), update db, return new recipe data.
    *
    * Data should be { recipe_id, label, image, ingredients, url }
    *
    * Returns { label, image, ingredients, url }
    *
    * Throws BadRequestError if recipe already in database.
-   * */
-
+   *
+   * @param {Object} data - The recipe data.
+   * @param {string} data.recipe_id - The ID of the recipe.
+   * @param {string} data.label - The label of the recipe.
+   * @param {string} data.image - The image URL of the recipe.
+   * @param {string[]} data.ingredients - The list of ingredients.
+   * @param {string} data.url - The URL of the recipe.
+   * @returns {Object} The newly created recipe.
+   * @throws {BadRequestError} If the recipe already exists in the database.
+   */
   static async createRecipe({ recipe_id, label, image, ingredients, url }) {
     const sanitize = (str) => str.replace(/"/g, '\\"');
     const fieldsToSanitize = { recipe_id, label, image, url };
@@ -55,13 +64,17 @@ class Recipe {
     return recipe;
   }
 
-  /** Given a recipe_id, return data about recipe.
+  /**
+   * Given a recipe_id, return data about recipe.
    *
    * Returns { label, image, ingredients, url }
    *
    * Throws NotFoundError if not found.
-   **/
-
+   *
+   * @param {string} recipe_id - The ID of the recipe.
+   * @returns {Object} The recipe data.
+   * @throws {NotFoundError} If the recipe is not found.
+   */
   static async getRecipe(recipe_id) {
     const recipeRes = await db.query(
           `SELECT label,

@@ -5,6 +5,16 @@ import {Context} from "../contexts/Context";
 import GoogleLogin from "../helpers/GoogleLogin";
 import "../styles/Forms.css"
 
+/**
+ * LoginForm component that provides a form for user login.
+ * It includes fields for username and password and a Google login option.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <LoginForm />
+ * )
+ */
 const LoginForm = () => {
     const navigate = useNavigate();
     const { login } = useContext(Context);
@@ -14,6 +24,11 @@ const LoginForm = () => {
         password:''
     })
 
+  /**
+   * Handles changes to the form input fields.
+   * 
+   * @param {Object} e - The event object.
+   */
     const handleChange = (e) => {
         const {name, value} = e.target;
         setFormData(formData => ({
@@ -22,6 +37,12 @@ const LoginForm = () => {
         }))
     }
 
+  /**
+   * Handles form submission for user login.
+   * 
+   * @param {Object} e - The event object.
+   * @async
+   */
     const handleSubmit = async(e) => {
         e.preventDefault();
         await login(formData);

@@ -8,6 +8,16 @@ import HealthOptions from "../home-components/HealthOptions";
 import "../styles/Home.css";
 import CarouselBackground from "../home-components/Carousel";
 
+/**
+ * Home component that serves as the main landing page of the application.
+ * It provides functionality for searching recipes and includes conditional rendering based on user authentication status.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <Home />
+ * )
+ */
 const Home = () => {
   const { user, apiTest } = useContext(Context); 
   const { isModalVisible } = useContext(APIContext); 
@@ -36,7 +46,6 @@ const Home = () => {
             }
             <>
               <SearchBar />
-              <Button onClick={() => apiTest()}>Test</Button>          
             </>
           </CardBody>
         </Card>

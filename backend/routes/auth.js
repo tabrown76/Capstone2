@@ -14,13 +14,25 @@ const userGoogleSchema = require("../schemas/userGoogle.json");
 const { BadRequestError } = require("../expressError");
 const { json } = require("react-router-dom");
 
-/** POST /auth/token:  { (username, password) || googleId } => { token }
- *
- * Returns JWT token which can be used to authenticate further requests.
- *
- * Authorization required: none
+/**
+ * POST /auth/token
+ * 
+ * Generates a JWT token for the user to authenticate further requests.
+ * 
+ * @name POST /auth/token
+ * @function
+ * @memberof module:routes/auth
+ * @inner
+ * @param {Object} req - The request object.
+ * @param {Object} req.body - The request body.
+ * @param {string} [req.body.username] - The username of the user.
+ * @param {string} [req.body.password] - The password of the user.
+ * @param {string} [req.body.googleId] - The Google ID of the user.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @returns {Object} An object containing the JWT token.
+ * @throws {BadRequestError} If the request body is invalid.
  */
-
 router.post("/token", async function (req, res, next) {
   try {
     const { username, password, googleId } = req.body;
@@ -49,15 +61,27 @@ router.post("/token", async function (req, res, next) {
   }
 })
 
-/** POST /auth/register:   { user } => { token }
- *
- * user must include { username, password, firstName, lastName, email }
- *
- * Returns JWT token which can be used to authenticate further requests.
- *
- * Authorization required: none
+/**
+ * POST /auth/register
+ * 
+ * Registers a new user and generates a JWT token for the user to authenticate further requests.
+ * 
+ * @name POST /auth/register
+ * @function
+ * @memberof module:routes/auth
+ * @inner
+ * @param {Object} req - The request object.
+ * @param {Object} req.body - The request body.
+ * @param {string} req.body.username - The username of the user.
+ * @param {string} req.body.password - The password of the user.
+ * @param {string} req.body.firstName - The first name of the user.
+ * @param {string} req.body.lastName - The last name of the user.
+ * @param {string} req.body.email - The email of the user.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @returns {Object} An object containing the JWT token.
+ * @throws {BadRequestError} If the request body is invalid.
  */
-
 router.post("/register", async function (req, res, next) {
   try {
     const validator = jsonschema.validate(req.body, userRegisterSchema);
@@ -74,15 +98,26 @@ router.post("/register", async function (req, res, next) {
   }
 });
 
-/** POST /auth/googleregister:   { user } => { token }
- *
- * must include { firstName, lastName, email, googleId }
- *
- * Returns JWT token which can be used to authenticate further requests.
- *
- * Authorization required: none
+/**
+ * POST /auth/googleregister
+ * 
+ * Registers a new user using Google account information and generates a JWT token for the user to authenticate further requests.
+ * 
+ * @name POST /auth/googleregister
+ * @function
+ * @memberof module:routes/auth
+ * @inner
+ * @param {Object} req - The request object.
+ * @param {Object} req.body - The request body.
+ * @param {string} req.body.firstName - The first name of the user.
+ * @param {string} req.body.lastName - The last name of the user.
+ * @param {string} req.body.email - The email of the user.
+ * @param {string} req.body.googleId - The Google ID of the user.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @returns {Object} An object containing the JWT token.
+ * @throws {BadRequestError} If the request body is invalid.
  */
-
 router.post("/googleregister", async function (req, res, next) {
   try {
     const validator = jsonschema.validate(req.body, userGoogleSchema);

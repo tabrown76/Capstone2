@@ -84,7 +84,6 @@ export default class NewEatsApi {
 
   /** Associate user and recipe */
   static async postRecipeUser(user_id, recipe_id, data){
-    console.log(`postRecipeUser data: ${JSON.stringify(data)}`);
     let res = await this.request(`recipes/${user_id}/${recipe_id}`, data, "post");
     return res.data.recipe;
   }

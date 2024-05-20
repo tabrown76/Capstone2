@@ -9,7 +9,11 @@ const SECRET_KEY = process.env.SECRET_KEY || "secret-dev";
 
 const PORT = +process.env.PORT || 3001;
 
-// Use dev database, testing database, or via env var, production database
+/**
+ * Get the database URI.
+ * Uses the test database if NODE_ENV is "test", otherwise uses the environment variable DATABASE_URL or defaults to "postgresql:///neweats".
+ * @returns {string} The database URI.
+ */
 function getDatabaseUri() {
   return (process.env.NODE_ENV === "test")
       ? "postgresql:///neweats_test"  

@@ -27,12 +27,25 @@ app.use("/users", usersRoutes);
 app.use("/recipes", recipesRoutes);
 app.use("/shopping", shoppingRoutes);
 
-/** Handle 404 errors -- this matches everything */
+/**
+ * Handle 404 errors -- this matches everything
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ * @param {Function} next - The next middleware function
+ * @returns {void}
+ */
 app.use(function (req, res, next) {
   return next(new NotFoundError());
 });
 
-/** Generic error handler; anything unhandled goes here. */
+/**
+ * Generic error handler; anything unhandled goes here.
+ * @param {Object} err - The error object
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ * @param {Function} next - The next middleware function
+ * @returns {Object} res - The response object with error status and message
+ */
 app.use(function (err, req, res, next) {
   if (process.env.NODE_ENV !== "test") console.error(err.stack);
   const status = err.status || 500;

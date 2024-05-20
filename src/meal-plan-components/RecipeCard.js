@@ -4,21 +4,38 @@ import { CSS } from '@dnd-kit/utilities';
 import { MealContext } from '../contexts/MealContext';
 import "../styles/RecipeCard.css";
 
+/**
+ * RecipeCard component that renders an individual recipe card.
+ * It supports drag-and-drop functionality using DnD Kit.
+ * 
+ * @component
+ * @param {Object} props - The props object.
+ * @param {Object} props.recipe - The recipe data.
+ * @param {string} props.id - The unique identifier for the recipe.
+ * @example
+ * return (
+ *   <RecipeCard recipe={recipe} id={recipe.id} />
+ * )
+ */
 const RecipeCard = ({ recipe, id }) => {
-  const {attributes, listeners, setNodeRef, transform, transition, isDragging} = useSortable({id});
+  const {attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({id});
   const {handleClick} = useContext(MealContext);
 
   const style = {
     transition,
-    transform: CSS.Transform.toString(transform)
-    // pointerEvents: isDragging ? 'none' : 'auto'
+    transform: CSS.Transform.toString(transform),
+    opacity: isDragging ? 0.5 : 1,
+    pointerEvents: isDragging ? 'none' : 'auto'
   }
 
-  const handleIconClick = () => {
-    console.log('Close icon clicked', recipe.id);
-    if(!isDragging){
-      handleClick(recipe.id);
-    }
+  /**
+   * Handles the click event on the close icon to delete the recipe.
+   * 
+   * @param {Object} e - The event object.
+   */
+  const handleIconClick = (e) => {
+    e.stopPropagation();
+    handleClick(recipe.id);
   };
 
   return (
@@ -28,7 +45,10 @@ const RecipeCard = ({ recipe, id }) => {
         {...attributes}
         {...listeners}
         style={style}
-        className="recipe-card"
+        className="recipe-card draggable"
+        data-sortable-container-id="recipes"
+        data-sortable-id={id}
+        data-recipe={JSON.stringify(recipe)}
       >
         <div className="close-icon" onClick={handleIconClick}>&times;</div>
         <h3>{recipe.label}</h3>

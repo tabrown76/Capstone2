@@ -1,41 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import React, { useContext, useEffect } from 'react';
 import CalendarCard from './CalendarCard';
+import { MealContext } from '../contexts/MealContext';
 
+/**
+ * CalendarView component that displays the weekly meal plan.
+ * It renders CalendarCard components for each day in the weekList.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <CalendarView />
+ * )
+ */
 const CalendarView = () => {
-  const [weekList, setWeekList] = useState([]);
-  
-  // Function to generate an array of dates for the current week
-  const getWeekDates = (startDate) => {
-    const dates = [];
-    for (let i = 0; i < 7; i++) {
-      let date = new Date(startDate);
-      date.setDate(startDate.getDate() + i);
-      date = {
-        date: date.toDateString(),
-        id: date.getTime().toString()
-      }
-      dates.push(date);
-    }
-    return dates;
-  }
+  const {value} = useContext(MealContext);
+  const {weekList} = value;
 
-  // Generate dates for the current week
-  useEffect(() => {
-    const currentDate = new Date();
-    const weekDates = getWeekDates(currentDate);
-
-    setWeekList(weekDates);
-  }, [])
-
+useEffect(() => {
+  console.log(weekList);
+})
   return (
-    <ul className="calendar-list" >
-      <SortableContext items={weekList.map(day => day.id)} strategy={verticalListSortingStrategy}>
-        {weekList.map((weekDay) => {
-          return <CalendarCard key={weekDay.id} date={weekDay} id={weekDay.id}/>;
+    <>
+      <h3>Drag your recipes over to customize your weekly meal plan.</h3>
+      <ul className="calendar-list" >
+        {weekList.map((date) =>{
+          return <CalendarCard
+            key={date.id}
+            date={date}
+            id={date.id}
+            day={date.day}
+          />
         })}
-      </SortableContext>
-    </ul>
+      </ul>
+    </>
   );
 };
 

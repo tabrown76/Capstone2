@@ -1,70 +1,130 @@
-# Getting Started with Create React App
+Meal Planner App
+Overview
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The Meal Planner App is a web application that helps users plan their meals for the week. Users can search for recipes, add them to their meal plan, and customize their weekly meal schedule. The app uses React for the frontend, DnD Kit for drag-and-drop functionality, and communicates with the Edamam API for recipe data.
+Features
 
-## Available Scripts
+    User Authentication: Users can sign up and log in using Google OAuth or through a traditional email and password method.
+    Recipe Search: Search for recipes using various filters like cuisine type and health options.
+    Meal Planning: Drag and drop recipes to customize the weekly meal plan.
+    Responsive Design: Optimized for both desktop and mobile views.
 
-In the project directory, you can run:
+Technologies Used
 
-### `npm start`
+    Frontend: React, React Router, Reactstrap, DnD Kit
+    Backend API: Edamam API
+    Authentication: Google OAuth
+    Styling: CSS, Bootstrap
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Getting Started
+Prerequisites
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+    Node.js
+    npm (or yarn)
+    Edamam API credentials
 
-### `npm test`
+Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+    Clone the repository:
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+git clone https://github.com/your-username/meal-planner-app.git
+cd meal-planner-app
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Install dependencies:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+npm install
 
-### `npm run eject`
+Create a .env file in the root directory and add your Edamam API credentials:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+makefile
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+REACT_APP_APP_ID=your-edamam-app-id
+REACT_APP_APP_KEY=your-edamam-app-key
+REACT_APP_GOOGLE_APP_ID=your-google-client-id
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Start the development server:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+    npm start
 
-## Learn More
+    Open your browser and navigate to http://localhost:3000.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Project Structure
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+css
 
-### Code Splitting
+meal-planner-app/
+├── public/
+├── src/
+│   ├── components/
+│   │   ├── CalendarCard.js
+│   │   ├── CalendarView.js
+│   │   ├── HealthOptionCheckbox.js
+│   │   ├── HealthOptions.js
+│   │   ├── RecipeCard.js
+│   │   ├── RecipeList.js
+│   │   ├── RecipeModal.js
+│   │   ├── RecipeReceiver.js
+│   │   ├── SearchBar.js
+│   ├── contexts/
+│   │   ├── APIContext.js
+│   │   ├── Context.js
+│   │   ├── MealContext.js
+│   ├── helpers/
+│   │   ├── constants.js
+│   │   ├── CustomPointerSensor.js
+│   ├── routes/
+│   │   ├── Home.js
+│   │   ├── LoginForm.js
+│   │   ├── MealPlan.js
+│   │   ├── NotAuthorized.js
+│   │   ├── NotFound.js
+│   │   ├── SignupForm.js
+│   ├── styles/
+│   │   ├── App.css
+│   │   ├── CalendarCard.css
+│   │   ├── Carousel.css
+│   │   ├── Forms.css
+│   │   ├── HealthOptions.css
+│   │   ├── MealPlanner.css
+│   │   ├── Nav.css
+│   │   ├── RecipeCard.css
+│   │   ├── RecipeModal.css
+│   │   ├── SearchBar.css
+│   ├── App.js
+│   ├── Nav.js
+│   ├── Routes.js
+│   ├── index.js
+│   ├── Api.js
+└── .env
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Usage
 
-### Analyzing the Bundle Size
+    Sign Up: Create a new account using the signup form or Google OAuth.
+    Log In: Log in to your account.
+    Search Recipes: Use the search bar to find recipes.
+    Add to Meal Plan: Drag recipes to the calendar to plan your meals.
+    Customize Meal Plan: Adjust your meal plan by dragging and dropping recipes within the calendar.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Contributing
 
-### Making a Progressive Web App
+    Fork the repository.
+    Create a new branch (git checkout -b feature-branch).
+    Commit your changes (git commit -am 'Add new feature').
+    Push to the branch (git push origin feature-branch).
+    Create a new Pull Request.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+License
 
-### Advanced Configuration
+This project is licensed under the MIT License.
+Acknowledgements
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+    Edamam API
+    DnD Kit
+    React
+    Reactstrap
+    Google OAuth
 
-### Deployment
+Contact
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+For any inquiries or issues, please open a GitHub issue or contact the project maintainer at tabrown76@gmail.com.

@@ -1,7 +1,16 @@
 import React from "react";
 import { Card, CardBody, CardTitle } from "reactstrap";
 
-function NotFound() {
+/**
+ * NotAuthorized component that displays a message when the user is not authorized to view a route.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <NotAuthorized />
+ * )
+ */
+function NotAuthorized() {
   return (
     <section className="col-md-8">
       <Card>
@@ -15,4 +24,4 @@ function NotFound() {
   );
 }
 
-export default NotFound;
+export default NotAuthorized;

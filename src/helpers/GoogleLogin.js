@@ -4,10 +4,25 @@ import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { Context } from '../contexts/Context';
 
+/**
+ * GoogleRegister component that handles Google OAuth registration.
+ * It decodes the JWT response from Google and logs in the user.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <GoogleRegister />
+ * )
+ */
 function GoogleRegister() {  
     const navigate = useNavigate();
     const { login } = useContext(Context);
 
+    /**
+   * Handles the Google credential response.
+   * 
+   * @param {Object} response - The response object containing the credential.
+   */
     function handleCredentialResponse(response) {
         const { credential } = response;
         try {

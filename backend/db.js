@@ -6,6 +6,10 @@ const { getDatabaseUri } = require("./config");
 let db;
 
 if (process.env.NODE_ENV === "production") {
+  /**
+   * Creates a new PostgreSQL client with SSL configuration for production.
+   * @type {Client}
+   */
   db = new Client({
     connectionString: getDatabaseUri(),
     ssl: {
@@ -13,6 +17,10 @@ if (process.env.NODE_ENV === "production") {
     }
   });
 } else {
+  /**
+   * Creates a new PostgreSQL client without SSL configuration for non-production environments.
+   * @type {Client}
+   */
   db = new Client({
     connectionString: getDatabaseUri()
   });

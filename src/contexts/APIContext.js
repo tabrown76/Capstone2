@@ -6,6 +6,18 @@ import NewEatsApi from '../Api';
 
 export const APIContext = createContext();
 
+/**
+ * APIContextProvider component that provides API-related state and context to its children.
+ * It handles recipe fetching, modal visibility, and selected health options.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <APIContextProvider>
+ *     <App />
+ *   </APIContextProvider>
+ * )
+ */
 export const APIContextProvider = ({ children }) => {
     const baseUrl = 'https://api.edamam.com/api/recipes/v2';
     const appId = process.env.REACT_APP_APP_ID;
@@ -18,12 +30,21 @@ export const APIContextProvider = ({ children }) => {
     const {setIsLoading} = useContext(Context);
     const navigate = useNavigate();
 
+    /**
+   * Closes the modal and resets query term and selected options.
+   */
     const closeModal = () => {
       setIsModalVisible(false);
       setQueryTerm('');
       setSelectedOptions([]);
     } 
 
+    /**
+   * Fetches a recipe from the Edamam API based on the query term and selected options.
+   * 
+   * @param {string} [cuisineType] - The type of cuisine to filter the recipes by.
+   * @returns {Promise} - A promise that resolves to the API response.
+   */
     const fetchRecipe = (cuisineType) => {
       let url = `${baseUrl}?type=public&q=${encodeURIComponent(queryTerm)}&app_id=${appId}&app_key=${appKey}`;
 
@@ -41,6 +62,13 @@ export const APIContextProvider = ({ children }) => {
       return axios.get(url);
     }
 
+    /**
+   * Checks the validity of a recipe URL and retries if necessary.
+   * 
+   * @param {string} url - The URL of the recipe to check.
+   * @param {string} cuisineType - The type of cuisine to filter the recipes by.
+   * @param {number} retryCount - The current retry count.
+   */
     const checkUrlAndRetry = (url, cuisineType, retryCount) => {
       NewEatsApi.checkRecipeUrl({ url })
         .then(status => {
@@ -57,6 +85,12 @@ export const APIContextProvider = ({ children }) => {
         });
     }
 
+    /**
+   * Handles retry logic for fetching a valid recipe URL.
+   * 
+   * @param {string} cuisineType - The type of cuisine to filter the recipes by.
+   * @param {number} retryCount - The current retry count.
+   */
     const handleRetry = (cuisineType, retryCount) => {
       if (retryCount < 5) {
         apiCall(cuisineType, retryCount + 1);
@@ -67,6 +101,12 @@ export const APIContextProvider = ({ children }) => {
       }
     }
 
+    /**
+   * Initiates an API call to fetch recipes and handles the response.
+   * 
+   * @param {string} cuisineType - The type of cuisine to filter the recipes by.
+   * @param {number} [retryCount=0] - The current retry count.
+   */
     const apiCall = (cuisineType, retryCount = 0) => {
       setIsLoading(true);
       fetchRecipe(cuisineType)
@@ -96,10 +136,11 @@ export const APIContextProvider = ({ children }) => {
         });
     }
 
-    useEffect(() => {
-      console.log(recipeData);
-    }, [recipeData])
-
+    /**
+   * Handles changes to the selected health options.
+   * 
+   * @param {string} option - The selected health option.
+   */
     const handleCheckboxChange = (option) => {
       setSelectedOptions(prev => {
         if (prev.includes(option)) {

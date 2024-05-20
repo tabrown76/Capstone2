@@ -12,10 +12,20 @@ const RecipesUsers = require("../models/recipes-users");
 const router = express.Router();
 
 /**
- * GET route to check the accessibility of a URL.
- * Expects a URL as a query parameter and checks if it is reachable.
- * @param {string} url - The URL to check, provided as a query parameter.
- * @return {object} - Returns an object with the status of the check and any relevant HTTP status code.
+ * GET /check-url
+ * 
+ * Checks the accessibility of a URL provided as a query parameter.
+ * 
+ * @name GET /check-url
+ * @function
+ * @memberof module:routes/shoppingLists
+ * @inner
+ * @param {Object} req - The request object.
+ * @param {Object} req.query - The query parameters.
+ * @param {string} req.query.url - The URL to check.
+ * @param {Object} res - The response object.
+ * @returns {Object} An object with the status of the check and any relevant HTTP status code.
+ * @throws {BadRequestError} If the URL parameter is not provided.
  */
 router.get('/check-url', async (req, res) => {
   const url = req.query.url;
@@ -32,11 +42,21 @@ router.get('/check-url', async (req, res) => {
 })
 
 /**
- * GET /:user_id => { recipes }
- *
- * Returns all recipes associated with user_id.
- *
- * Authorization required: Must be the same user as :user_id
+ * GET /:user_id
+ * 
+ * Returns all recipes associated with the given user ID.
+ * 
+ * @name GET /:user_id
+ * @function
+ * @memberof module:routes/shoppingLists
+ * @inner
+ * @param {Object} req - The request object.
+ * @param {Object} req.params - The request parameters.
+ * @param {number} req.params.user_id - The ID of the user.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @returns {Object} An object containing an array of recipes.
+ * @throws {BadRequestError} If the user ID is invalid.
  */
 router.get("/:user_id", ensureCorrectUser, async function (req, res, next) {
   try {
@@ -58,11 +78,22 @@ router.get("/:user_id", ensureCorrectUser, async function (req, res, next) {
 })
 
 /**
- * GET /:user_id/:recipe_id => { recipe }
- *
- * Returns the recipe data specified by recipe_id.
- *
- * Authorization required: Must be the same user as :user_id
+ * GET /:user_id/:recipe_id
+ * 
+ * Returns the recipe data specified by the recipe ID.
+ * 
+ * @name GET /:user_id/:recipe_id
+ * @function
+ * @memberof module:routes/shoppingLists
+ * @inner
+ * @param {Object} req - The request object.
+ * @param {Object} req.params - The request parameters.
+ * @param {number} req.params.user_id - The ID of the user.
+ * @param {string} req.params.recipe_id - The ID of the recipe.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @returns {Object} An object containing the recipe data.
+ * @throws {BadRequestError} If the user ID is invalid.
  */
 router.get("/:user_id/:recipe_id", ensureCorrectUser, async function (req, res, next) {
   try {
@@ -83,13 +114,25 @@ router.get("/:user_id/:recipe_id", ensureCorrectUser, async function (req, res, 
   }
 })
 
-/** POST /:user_id/:recipe_id => { recipe }
- *
- * Adds the recipe to recipes_users
- *
- * Authorization required: Must be the same user as :user_id
- **/
-
+/**
+ * POST /:user_id/:recipe_id
+ * 
+ * Adds the recipe to recipes_users.
+ * 
+ * @name POST /:user_id/:recipe_id
+ * @function
+ * @memberof module:routes/shoppingLists
+ * @inner
+ * @param {Object} req - The request object.
+ * @param {Object} req.params - The request parameters.
+ * @param {number} req.params.user_id - The ID of the user.
+ * @param {string} req.params.recipe_id - The ID of the recipe.
+ * @param {Object} req.body - The request body containing recipe data.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @returns {Object} An object containing the added recipe data.
+ * @throws {BadRequestError} If the user ID is invalid.
+ */
 router.post("/:user_id/:recipe_id", ensureCorrectUser, async function (req, res, next) {
   try {
     const userId = parseInt(req.params.user_id);
@@ -109,13 +152,24 @@ router.post("/:user_id/:recipe_id", ensureCorrectUser, async function (req, res,
   }
 })
 
-/** Delete /:user_id/:recipe_id => { deleted: recipe_id }
- *
- * Removes the recipe from recipes_users
- *
- * Authorization required: Must be the same user as :user_id
- **/
-
+/**
+ * DELETE /:user_id/:recipe_id
+ * 
+ * Removes the recipe from recipes_users.
+ * 
+ * @name DELETE /:user_id/:recipe_id
+ * @function
+ * @memberof module:routes/shoppingLists
+ * @inner
+ * @param {Object} req - The request object.
+ * @param {Object} req.params - The request parameters.
+ * @param {number} req.params.user_id - The ID of the user.
+ * @param {string} req.params.recipe_id - The ID of the recipe.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @returns {Object} An object confirming the deletion with the recipe ID.
+ * @throws {BadRequestError} If the user ID is invalid.
+ */
 router.delete("/:user_id/:recipe_id", ensureCorrectUser, async function (req, res, next) {
   try {
     const userId = parseInt(req.params.user_id);

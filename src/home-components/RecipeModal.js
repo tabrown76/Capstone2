@@ -5,11 +5,26 @@ import { APIContext } from "../contexts/APIContext";
 import NewEatsApi from "../Api";
 import "../styles/RecipeModal.css";
 
+/**
+ * RecipeModal component that displays a modal with recipe details.
+ * It allows users to view recipe ingredients, add the recipe to their meal plan, or fetch the next recipe.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <RecipeModal />
+ * )
+ */
 const RecipeModal = () => {
     const { user } = useContext(Context);
     const { apiCall, recipeData, closeModal } = useContext(APIContext);
     const modalContentRef = useRef(null);
 
+    /**
+   * Handles keydown events to close the modal on "Escape" key press.
+   * 
+   * @param {Object} e - The event object.
+   */
     const handleKeyDown = (e) => {
         if (e.key === "Escape") {
             closeModal();
@@ -26,17 +41,26 @@ const RecipeModal = () => {
         };
     })
 
+    /**
+   * Resets the modal content scroll position to the top.
+   */
     const modalReset = () => {
         if (modalContentRef.current) {
             modalContentRef.current.scrollTop = 0;
         }
     }
 
+    /**
+   * Fetches the next recipe and resets the modal content.
+   */
     const handleNext = () => {
         apiCall();
         modalReset();
     }   
     
+    /**
+   * Adds the current recipe to the user's meal plan.
+   */
     const handleAdd = () => {
         const { uri } = recipeData;
         const recipeId = uri.match(/recipe_(.+)/)[1];
@@ -46,7 +70,11 @@ const RecipeModal = () => {
         modalReset();
     }
 
-    // Prevent modal content click from closing the modal
+    /**
+   * Prevents modal content click from closing the modal.
+   * 
+   * @param {Object} e - The event object.
+   */
     const stopPropagation = (e) => e.stopPropagation();
 
     return (

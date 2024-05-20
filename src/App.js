@@ -7,6 +7,16 @@ import RecipeNav from "./Nav";
 import RecipeRoutes from "./Routes";
 import './styles/App.css';
 
+/**
+ * App component that sets up the main application structure.
+ * It includes routing and various context providers.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <App />
+ * )
+ */
 function App() {
   return (
     <BrowserRouter>

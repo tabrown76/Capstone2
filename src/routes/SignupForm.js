@@ -5,6 +5,16 @@ import {Context} from "../contexts/Context";
 import GoogleRegister from "../helpers/GoogleRegister";
 import "../styles/Forms.css"
 
+/**
+ * SignupForm component that provides a form for user registration.
+ * It includes fields for username, first name, last name, email, and password, and a Google registration option.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <SignupForm />
+ * )
+ */
 const SignupForm = () => {
     const navigate = useNavigate();
     const {postRegistrationData} = useContext(Context);
@@ -17,6 +27,11 @@ const SignupForm = () => {
         password: ''
     })
 
+    /**
+   * Handles changes to the form input fields.
+   * 
+   * @param {Object} e - The event object.
+   */
     const handleChange = (e) => {
         const {name, value} = e.target;
         setFormData(formData => ({
@@ -25,10 +40,14 @@ const SignupForm = () => {
         }))
     }
 
+    /**
+   * Handles form submission for user registration.
+   * 
+   * @param {Object} e - The event object.
+   */
     const handleSubmit = (e) => {
         e.preventDefault();
         postRegistrationData(formData);
-        console.log(formData);
         setFormData({
             username: '',
             firstName: '',

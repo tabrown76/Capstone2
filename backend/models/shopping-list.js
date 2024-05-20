@@ -3,12 +3,13 @@ const { BadRequestError, NotFoundError } = require("../expressError");
 
 class ShoppingList {
     /**
-     * Add ingredients from a recipe to the user's shopping list.
-     * 
-     * @param {integer} user_id - The ID of the user.
-     * @param {string} recipe_id - The URI of the recipe.
-     * @returns The updated shopping list for the user.
-     */
+   * Add ingredients from a recipe to the user's shopping list.
+   * 
+   * @param {number} user_id - The ID of the user.
+   * @param {string} recipe_id - The URI of the recipe.
+   * @returns {Promise<string[]>} The updated shopping list for the user.
+   * @throws {NotFoundError} If the recipe is not found.
+   */
     static async addRecipeIngredients(user_id, recipe_id) {
         // Retrieve the recipe's ingredients
         const recipeRes = await db.query(
@@ -37,12 +38,12 @@ class ShoppingList {
     }
 
     /**
-     * Update the shopping list of a user by replacing it with a new list of ingredients.
-     * 
-     * @param {integer} user_id - The ID of the user.
-     * @param {array} ingredients - An array of the text of the ingredients to set as the new list.
-     * @returns A confirmation message.
-     */
+   * Update the shopping list of a user by replacing it with a new list of ingredients.
+   * 
+   * @param {number} user_id - The ID of the user.
+   * @param {string[]} ingredients - An array of the text of the ingredients to set as the new list.
+   * @returns {Promise<{message: string}>} A confirmation message.
+   */
     static async updateList(user_id, ingredients) {
         await db.query(
             `INSERT INTO shopping_list (user_id, ingredients)
@@ -56,11 +57,11 @@ class ShoppingList {
     }
 
     /**
-     * Retrieve the shopping list for a specific user.
-     * 
-     * @param {integer} user_id - The ID of the user.
-     * @returns The user's shopping list as an array of ingredients.
-     */
+   * Retrieve the shopping list for a specific user.
+   * 
+   * @param {number} user_id - The ID of the user.
+   * @returns {Promise<string[]>} The user's shopping list as an array of ingredients.
+   */
     static async getUserShoppingList(user_id) {
         const result = await db.query(
             `SELECT ingredients

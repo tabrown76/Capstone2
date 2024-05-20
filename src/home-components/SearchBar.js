@@ -5,6 +5,16 @@ import { Button } from "reactstrap";
 import { cuisineTypeOptions } from '../helpers/constants';
 import "../styles/SearchBar.css";
 
+/**
+ * SearchBar component that provides a search input for querying recipes.
+ * It includes options for filtering by cuisine type and displays recent searches.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <SearchBar />
+ * )
+ */
 const SearchBar = () => {
     const {user} = useContext(Context);
     const {queryTerm, setQueryTerm, apiCall} = useContext(APIContext);
@@ -14,20 +24,40 @@ const SearchBar = () => {
     const containerRef = useRef(null);
     const inputRef = useRef(null);
 
+    /**
+   * Handles changes to the cuisine type filter.
+   * 
+   * @param {Object} e - The event object.
+   */
     const handleFilterChange = (e) => {
         setCuisineType(e.target.value);
     }
 
+    /**
+   * Handles changes to the search input field.
+   * 
+   * @param {Object} e - The event object.
+   */
     const handleInputChange = (e) => {
         setQueryTerm(e.target.value);
     }
 
+    /**
+   * Handles keydown events for the search input field.
+   * Initiates search on "Enter" key press.
+   * 
+   * @param {Object} e - The event object.
+   */
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             handleSubmit();
         }
     }
 
+    /**
+   * Handles search submission.
+   * Initiates an API call and updates recent searches.
+   */
     const handleSubmit = () => {
         apiCall(cuisineType);
         updateRecentSearches(queryTerm);
@@ -35,8 +65,12 @@ const SearchBar = () => {
         clearInputFocus();
     }
 
+    /**
+   * Handles clicks on recent search items.
+   * 
+   * @param {string} search - The search term clicked.
+   */
     const handleRecentSearchClick = (search) => {
-        console.log('Recent search clicked:', search);
         setQueryTerm(search);
         setShowRecentSearches(false);
     };
@@ -54,6 +88,9 @@ const SearchBar = () => {
         };
     }, [containerRef]);
 
+    /**
+   * Clears the focus from the input field.
+   */
     const clearInputFocus = () => {
         inputRef.current.blur();
     }
@@ -63,7 +100,12 @@ const SearchBar = () => {
           setCuisineType("");
         }
     }, [user]);
-      
+    
+    /**
+   * Updates the list of recent searches.
+   * 
+   * @param {string} searchTerm - The search term to update.
+   */
     const updateRecentSearches = (searchTerm) => {
         setRecentSearches(prevSearches => {
             const updatedSearches = [...prevSearches];

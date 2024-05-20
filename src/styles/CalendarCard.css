@@ -10,10 +10,12 @@ li.calendar-card-li {
     background-color: #f0f0f0; 
     border: 1px solid #ccc; 
     border-radius: 8px; 
-    padding: 20px; 
+    padding: 40px 20px 20px 20px; 
     margin-bottom: 20px; 
     position: relative; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex-direction: column; 
+    align-items: center;
 }
 
 /* Styling for the date */
@@ -25,11 +27,23 @@ li.calendar-card-li span {
     font-size: 1.2em; 
 }
 
-/* Blank area for other content */
-li.calendar-card-li::after {
-    content: ""; 
-    display: block; 
+/* Add styling for RecipeReceiver */
+.recipe-receiver {
     height: 80px; 
     background-color: #e0e0e0; 
     margin-top: 15px; 
+    width: 100%; /* Ensure full width */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px dashed #ccc;
+    position: relative; 
+    border-radius: 5px;
+}
+
+h3 {
+    font-size: 1em; 
+    margin: 0 0 10px 0; 
+    flex: 1;
+    text-align: center;
 }

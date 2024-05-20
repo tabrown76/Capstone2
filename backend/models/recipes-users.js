@@ -4,12 +4,18 @@ const db = require("../db");
 const { BadRequestError, NotFoundError } = require("../expressError");
 
 class RecipesUsers {
-  /** Associate a recipe with a user.
+  /**
+   * Associate a recipe with a user.
    *
    * Requires recipe_id and user_id.
    *
    * Throws BadRequestError if the relationship already exists.
-   **/
+   *
+   * @param {string} recipe_id - The ID of the recipe.
+   * @param {number} user_id - The ID of the user.
+   * @returns {Object} The recipe-user relationship.
+   * @throws {BadRequestError} If the relationship already exists.
+   */
   static async addToUser( recipe_id, user_id ) {
     // Check for existing relationship
     const duplicateCheck = await db.query(
@@ -33,12 +39,18 @@ class RecipesUsers {
     return result.rows[0];
   }
 
-  /** Remove association of a recipe to a user; returns undefined.
+  /**
+   * Remove association of a recipe to a user; returns undefined.
    *
    * Requires recipe_id and user_id.
    *
    * Throws NotFoundError if recipe-user relationship not found.
-   **/
+   *
+   * @param {number} user_id - The ID of the user.
+   * @param {string} recipe_id - The ID of the recipe.
+   * @returns {undefined}
+   * @throws {NotFoundError} If the recipe-user relationship is not found.
+   */
   static async removeFromUser( user_id, recipe_id ) {
     const result = await db.query(
       `DELETE FROM recipes_users
@@ -54,10 +66,14 @@ class RecipesUsers {
     }
   }
 
-  /** Retrieves recipe info for recipes associated with user_id.
+  /**
+   * Retrieves recipe info for recipes associated with user_id.
    *
-   * Requires user_id
-   **/
+   * Requires user_id.
+   *
+   * @param {number} user_id - The ID of the user.
+   * @returns {Object[]} An array of recipes associated with the user.
+   */
   static async findAll(user_id) {
     const result = await db.query(
           `SELECT r.recipe_id, r.label, r.image, r.ingredients, r.url

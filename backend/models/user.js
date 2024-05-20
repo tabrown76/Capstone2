@@ -14,13 +14,18 @@ const { BCRYPT_WORK_FACTOR } = require("../config.js");
 /** Related functions for users. */
 
 class User {
-  /** authenticate user with username, password.
+  /**
+   * Authenticate user with username and password.
    *
    * Returns { user_id, username, first_name, last_name, email }
    *
-   * Throws UnauthorizedError is user not found or wrong password.
-   **/
-
+   * Throws UnauthorizedError if user not found or wrong password.
+   *
+   * @param {string} username - The username of the user.
+   * @param {string} password - The password of the user.
+   * @returns {Object} The authenticated user.
+   * @throws {UnauthorizedError} If the user is not found or the password is incorrect.
+   */
   static async authenticate(username, password) {
     // try to find the user first
     const result = await db.query(
@@ -55,7 +60,11 @@ class User {
    * Returns { user_id, username, firstName, lastName, email }
    *
    * Throws UnauthorizedError if user not found.
-   **/
+   *
+   * @param {string} googleId - The Google ID of the user.
+   * @returns {Object} The authenticated user.
+   * @throws {UnauthorizedError} If the user is not found.
+   */
   static async authenticateWithGoogle(googleId) {
     // Try to find the user by Google ID
     const result = await db.query(
@@ -79,13 +88,22 @@ class User {
   }
 
 
-  /** Register user with data.
+  /**
+   * Register user with data.
    *
-   * Returns { username, firstName, lastName, email }
+   * Returns { user_id, username, firstName, lastName, email }
    *
    * Throws BadRequestError on duplicates.
-   **/
-
+   *
+   * @param {Object} data - The user data.
+   * @param {string} data.username - The username of the user.
+   * @param {string} data.password - The password of the user.
+   * @param {string} data.firstName - The first name of the user.
+   * @param {string} data.lastName - The last name of the user.
+   * @param {string} data.email - The email of the user.
+   * @returns {Object} The registered user.
+   * @throws {BadRequestError} If the username is a duplicate.
+   */
   static async register(
       { username, password, firstName, lastName, email }) {
     const duplicateCheck = await db.query(
@@ -124,13 +142,21 @@ class User {
     return user;
   }
 
-  /** Register user with data.
+  /**
+   * Register user with Google data.
    *
-   * Returns { username, firstName, lastName, email, googleId }
+   * Returns { user_id, firstName, lastName, email, googleId }
    *
    * Throws BadRequestError on duplicates.
-   **/
-
+   *
+   * @param {Object} data - The user data.
+   * @param {string} data.firstName - The first name of the user.
+   * @param {string} data.lastName - The last name of the user.
+   * @param {string} data.email - The email of the user.
+   * @param {string} data.googleId - The Google ID of the user.
+   * @returns {Object} The registered user.
+   * @throws {BadRequestError} If the Google ID is a duplicate.
+   */
   static async googleRegister(
       { firstName, lastName, email, googleId }) {
     const duplicateCheck = await db.query(
@@ -165,11 +191,13 @@ class User {
     return user;
   }
 
-  /** Find all users.
+  /**
+   * Find all users.
    *
    * Returns [{ user_id, first_name, last_name, email }, ...]
-   **/
-
+   *
+   * @returns {Object[]} An array of all users.
+   */
   static async findAll() {
     const result = await db.query(
           `SELECT user_id,
@@ -183,13 +211,17 @@ class User {
     return result.rows;
   }
 
-  /** Given a user_id, return data about user.
+  /**
+   * Given a user_id, return data about user.
    *
-   * Returns { user_id, username, first_name, last_name, email  }
+   * Returns { user_id, username, first_name, last_name, email }
    *
    * Throws NotFoundError if user not found.
-   **/
-
+   *
+   * @param {number} user_id - The ID of the user.
+   * @returns {Object} The user data.
+   * @throws {NotFoundError} If the user is not found.
+   */
   static async get(user_id) {
     const userRes = await db.query(
           `SELECT user_id,
@@ -209,7 +241,8 @@ class User {
     return user;
   }
 
-  /** Update user data with `data`.
+  /**
+   * Update user data with `data`.
    *
    * This is a "partial update" --- it's fine if data doesn't contain
    * all the fields; this only changes provided ones.
@@ -217,15 +250,23 @@ class User {
    * Data can include:
    *   { firstName, lastName, password, email }
    *
-   * Returns { username, firstName, lastName, email }
+   * Returns { user_id, firstName, lastName, email }
    *
    * Throws NotFoundError if not found.
    *
    * WARNING: this function can set a new password.
    * Callers of this function must be certain they have validated inputs to this
-   * or a serious security risks are opened.
+   * or a serious security risk is opened.
+   *
+   * @param {number} user_id - The ID of the user.
+   * @param {Object} data - The data to update.
+   * @param {string} [data.firstName] - The first name of the user.
+   * @param {string} [data.lastName] - The last name of the user.
+   * @param {string} [data.password] - The password of the user.
+   * @param {string} [data.email] - The email of the user.
+   * @returns {Object} The updated user data.
+   * @throws {NotFoundError} If the user is not found.
    */
-
   static async update(user_id, data) {
     if (data.password) {
       data.password = await bcrypt.hash(data.password, BCRYPT_WORK_FACTOR);
@@ -255,8 +296,13 @@ class User {
     return user;
   }
 
-  /** Delete given user from database; returns undefined. */
-
+  /**
+   * Delete given user from database; returns undefined.
+   *
+   * @param {number} user_id - The ID of the user.
+   * @returns {void}
+   * @throws {NotFoundError} If the user is not found.
+   */
   static async remove(user_id) {
     let result = await db.query(
           `DELETE

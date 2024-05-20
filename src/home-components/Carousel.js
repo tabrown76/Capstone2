@@ -7,7 +7,15 @@ import "../styles/Carousel.css";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 
-
+/**
+ * CarouselBackground component that displays a background image carousel using react-slick.
+ * 
+ * @component
+ * @example
+ * return (
+ *   <CarouselBackground />
+ * )
+ */
 const CarouselBackground = () => {
   const settings = {
     dots: false,

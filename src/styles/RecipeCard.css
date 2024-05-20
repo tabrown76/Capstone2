@@ -21,6 +21,7 @@ li.recipe-card {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
+    z-index: 10;
 }
 
 /* Styling for the recipe title */
@@ -39,3 +40,8 @@ li.recipe-card img {
     margin-right: 10px;
     order: -1;
 }
+
+/* Additional styles for the draggable items */
+.draggable {
+    z-index: 1000; 
+  }
