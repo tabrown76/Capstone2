@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import CalendarCard from './CalendarCard';
 import { MealContext } from '../contexts/MealContext';
 
@@ -16,9 +16,6 @@ const CalendarView = () => {
   const {value} = useContext(MealContext);
   const {weekList} = value;
 
-useEffect(() => {
-  console.log(weekList);
-})
   return (
     <>
       <h3>Drag your recipes over to customize your weekly meal plan.</h3>

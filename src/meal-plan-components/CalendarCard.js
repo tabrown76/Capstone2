@@ -20,8 +20,9 @@ const CalendarCard = ({date, id, day}) => {
 
     return(
         <li 
+            key={date.day}
             className="calendar-card-li"
-            data-sortable-container-id={`day-${day}`}
+            data-sortable-container-id={id}
             data-sortable-id={id}
         >
             <span>{date.date}</span>

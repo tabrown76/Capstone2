@@ -1,5 +1,5 @@
 import React from "react";
-import { useDroppable } from "@dnd-kit/core";
+import { useSortable,  } from "@dnd-kit/sortable";
 import { CSS } from '@dnd-kit/utilities';
 
 /**
@@ -15,23 +15,24 @@ import { CSS } from '@dnd-kit/utilities';
  * )
  */
 const RecipeReceiver = ({ id }) => {
-    const { setNodeRef, isOver, active } = useDroppable({ id });
+  const {attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({id});
 
   const style = {
-    // transition,
-    // transform: CSS.Transform.toString(transform),
-    // opacity: isDragging ? 0.5 : 1,
-    // pointerEvents: isDragging ? 'none' : 'auto'
+    transition,
+    transform: CSS.Transform.toString(transform),
+    opacity: isDragging ? 0.5 : 1,
+    pointerEvents: isDragging ? 'none' : 'auto'
   }
 
   return (
     <div 
-        ref={setNodeRef}
-        // {...attributes}
-        // {...listeners}
-        style={style}
-        className="recipe-receiver draggable"
-        data-sortable-container-id={`day-${id}`}
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      style={style}
+      className="recipe-receiver draggable"
+      data-sortable-container-id="recipe-receiver"
+      data-sortable-id={id}
     >
       Drop here
     </div>
