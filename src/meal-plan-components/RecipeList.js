@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { MealContext } from '../contexts/MealContext';
+import React from 'react';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import RecipeCard from './RecipeCard';
 
 /**
@@ -12,15 +12,15 @@ import RecipeCard from './RecipeCard';
  *   <RecipeList />
  * )
  */
-const RecipeList = () => {
-  const { value } = useContext(MealContext);
-  const {recipeList} = value;
+const RecipeList = ({recipeList}) => {
 
   return (
     <ul className="recipe-list" >
+      <SortableContext items={recipeList.map(recipe => recipe.id)} strategy={verticalListSortingStrategy} id='recipes'>
         {recipeList && recipeList.map((recipe) => (
           <RecipeCard key={recipe.id} recipe={recipe} id={recipe.id} />
         ))} 
+      </SortableContext>
     </ul>
   )
 }

@@ -21,6 +21,7 @@ export const MealContextProvider = ({ children }) => {
     const { user, setIsLoading } = useContext(Context);
     const [recipeList, setRecipeList] = useState([]);
     const [weekList, setWeekList] = useState([]);
+    const [dragIds, setDragIds] = useState([]);
     const location = useLocation();
 
     useEffect(() => {
@@ -74,12 +75,19 @@ export const MealContextProvider = ({ children }) => {
         }
     }, [location.pathname, user])
 
+    useEffect(() => {
+        const ids = weekList.map(date => ({id: date.id}));
+        setDragIds(ids);
+    }, [weekList]); 
+
     const value = useMemo(() => ({
         recipeList,
         setRecipeList,
         weekList,
-        setWeekList
-    }), [recipeList, weekList])
+        setWeekList,
+        dragIds, 
+        setDragIds
+    }), [recipeList, weekList, dragIds])
 
     /**
    * Handles the click event to delete a recipe for the user.

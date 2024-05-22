@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Card, CardBody, CardTitle, CardSubtitle, Button } from "reactstrap";
+import { Card, CardBody, CardTitle, CardSubtitle } from "reactstrap";
 import SearchBar from "../home-components/SearchBar";
 import RecipeModal from "../home-components/RecipeModal";
 import { Context } from "../contexts/Context";
@@ -19,7 +19,7 @@ import CarouselBackground from "../home-components/Carousel";
  * )
  */
 const Home = () => {
-  const { user, apiTest } = useContext(Context); 
+  const { user } = useContext(Context); 
   const { isModalVisible } = useContext(APIContext); 
 
   return (

@@ -25,17 +25,19 @@ const RecipeReceiver = ({ id }) => {
   }
 
   return (
-    <div 
-      ref={setNodeRef}
-      {...attributes}
-      {...listeners}
-      style={style}
-      className="recipe-receiver draggable"
-      data-sortable-container-id="recipe-receiver"
-      data-sortable-id={id}
-    >
-      Drop here
-    </div>
+    <>
+      <div 
+        ref={setNodeRef}
+        {...attributes}
+        {...listeners}
+        style={style}
+        className="recipe-receiver draggable"
+        data-sortable-container-id="recipe-receiver"
+        data-sortable-id={id}
+      >
+        Drop here
+      </div>
+    </>
   );
 };
 

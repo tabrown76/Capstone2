@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { DndContext, closestCorners, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
-import { SortableContext, verticalListSortingStrategy, horizontalListSortingStrategy } from '@dnd-kit/sortable';
+import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable';
 import { MealContext } from '../contexts/MealContext';
 import CalendarView from './CalendarView';
 import RecipeList from './RecipeList';
@@ -20,8 +20,7 @@ import "../styles/MealPlanner.css";
  */
 const MealPlanner = () => {
   const { value } = useContext(MealContext);
-  const { recipeList, setRecipeList, weekList, setWeekList } = value;
-  const [sortingStrategy, setSortingStrategy] = useState();
+  const { recipeList, setRecipeList, weekList, dragIds, setDragIds} = value;
 
   /**
    * Handles the end of a drag event.
@@ -34,7 +33,6 @@ const MealPlanner = () => {
     if (!over) return;
   
     const activeContainer = active.data.current.sortable.containerId;
-    console.log(active)
     const overContainer = over.data.current?.sortable.containerId || over.id;
   
     if (activeContainer !== overContainer) {
@@ -45,57 +43,29 @@ const MealPlanner = () => {
   }
 
   const horizontalSortingFunc = (active, over, activeContainer, overContainer) => {
-    // setSortingStrategy(horizontalListSortingStrategy);
-      // if (activeContainer === 'recipes' && overContainer.startsWith('day-')) {
-      //   const day = overContainer.split('-')[1];
-      //   setWeekList((prevCalendar) => ({
-      //     ...prevCalendar,
-      //     [day]: [...(prevCalendar[day] || []), active.data.current.recipe]
-      //   }));
-      //   setRecipeList((items) => items.filter(item => item.id !== active.id));
-      // } else if (overContainer.startsWith('day-')) { 
-      //   const day = overContainer.split('-')[1];
-      //   setWeekList((prevCalendar) => ({
-      //     ...prevCalendar,
-      //     [day]: [...(prevCalendar[day] || []), active.data.current.recipe]
-      //   }));
-      //   setRecipeList((items) => items.filter(item => item.id !== active.id));
-      // }
+
   }
   
   const verticalSortingFunc = (active, over, overContainer) => {
-    setSortingStrategy(verticalListSortingStrategy);
-
-      if (overContainer === 'recipes') {
-        let items = [...recipeList];
-        console.log("items:", items);
-        const oldIndex = items.findIndex(item => item.id === active.id);
-        const newIndex = items.findIndex(item => item.id === over.id);
-        items = arrayMove(items, oldIndex, newIndex);
-        setRecipeList(items);
-      } else {
-        console.log("weekList from func:", (JSON.stringify(weekList)));
-        let items = [...weekList];
-        console.log("items:", items);
-        const oldIndex = items.findIndex(item => item.id === active.id);
-        const newIndex = items.findIndex(item => item.id === over.id);
-        items = arrayMove(items, oldIndex, newIndex);
-        setWeekList(items);
-      }
-  }
-
-  useEffect(() => {
-    console.log(weekList);
-  }, [weekList])
+    let items = overContainer === 'recipes' ? [...recipeList] : [...dragIds];
+    const oldIndex = items.findIndex(item => item.id === active.id);
+    const newIndex = items.findIndex(item => item.id === over.id);
+    items = arrayMove(items, oldIndex, newIndex);
+    overContainer === 'recipes' ? setRecipeList(items) : setDragIds(items);
+  }  
   
   useEffect(() => {
     console.log("Updated recipeList:", recipeList);
   }, [recipeList]);
+
+  useEffect(() => {
+    console.log(`updated dragIds: ${JSON.stringify(dragIds)}`);
+  }, [dragIds])
   
 
   const allItems = [
     ...recipeList.map(recipe => ({ id: recipe.id, containerId: 'recipes' })),
-    ...weekList.map(date => ({id: date.id, containerId: 'recipe-receiver'}))
+    ...dragIds.map(item => ({id: item.id, containerId: 'recipe-receiver'}))
   ];
 
   const sensors = useSensors(
@@ -104,13 +74,13 @@ const MealPlanner = () => {
  
   return (
     <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
-      <SortableContext items={allItems} strategy={sortingStrategy} id='recipes'>
+      <SortableContext items={allItems} strategy={horizontalListSortingStrategy} id='recipes-and-receiver'>
         <div className='meal-planner-container'>
           <div className='meal-planner-section calendar-view-section'>
-            <CalendarView />
+            <CalendarView weekList={weekList} />
           </div>
           <div className='meal-planner-section recipe-list-section'>
-            <RecipeList />
+            <RecipeList recipeList={recipeList} />
           </div>
         </div>
       </SortableContext>

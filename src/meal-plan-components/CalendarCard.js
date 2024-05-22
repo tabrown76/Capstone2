@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import RecipeReciever from "./RecipeReciever";
+import { MealContext } from "../contexts/MealContext";
 import "../styles/CalendarCard.css";
 
 /**
@@ -16,18 +18,19 @@ import "../styles/CalendarCard.css";
  *   <CalendarCard date={date} id={date.id} day={date.day} />
  * )
  */
-const CalendarCard = ({date, id, day}) => {
+const CalendarCard = ({date, id}) => {
+    const {value} = useContext(MealContext);
+    const {dragIds} = value;
 
     return(
-        <li 
-            key={date.day}
-            className="calendar-card-li"
-            data-sortable-container-id={id}
-            data-sortable-id={id}
-        >
-            <span>{date.date}</span>
-            <RecipeReciever id={id}/>
-        </li>
+        <>
+            <li className="calendar-card-li">
+                <span   key={date.id} >{date.date}</span>
+                <SortableContext items={dragIds.map(item => item.id)} strategy={verticalListSortingStrategy} id='recipe-receiver'>
+                    <RecipeReciever key={id} id={id}/>
+                </SortableContext>
+            </li>
+        </>  
     )
 }
 
