@@ -60,7 +60,7 @@ const RecipeNav = () => {
                       <NavLink href={`/${user.user_id}/mealplan`}>Meal Planning</NavLink>
                     </DropdownItem>
                     <DropdownItem>
-                      <NavLink href="">Shopping List</NavLink>
+                      <NavLink href={`/${user.user_id}/shopping`}>Shopping List</NavLink>
                     </DropdownItem>
                     <DropdownItem divider/>
                     <DropdownItem>

@@ -45,7 +45,7 @@ const RecipeCard = ({ recipe, id }) => {
         {...attributes}
         {...listeners}
         style={style}
-        className="recipe-card draggable"
+        className="recipe-card"
         data-sortable-container-id="recipes"
         data-sortable-id={id}
         data-recipe={JSON.stringify(recipe)}

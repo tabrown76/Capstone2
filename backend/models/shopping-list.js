@@ -6,24 +6,21 @@ class ShoppingList {
    * Add ingredients from a recipe to the user's shopping list.
    * 
    * @param {number} user_id - The ID of the user.
-   * @param {string} recipe_id - The URI of the recipe.
+   * @param {string} ingredients - An array of ingredients.
    * @returns {Promise<string[]>} The updated shopping list for the user.
    * @throws {NotFoundError} If the recipe is not found.
    */
-    static async addRecipeIngredients(user_id, recipe_id) {
+    static async addRecipeIngredients(user_id, ingredients) {
         // Retrieve the recipe's ingredients
-        const recipeRes = await db.query(
-            `SELECT ingredients
-             FROM recipes
-             WHERE recipe_id = $1`,
-            [recipe_id]
+        const userRes = await db.query(
+            `SELECT 1
+             FROM users
+             WHERE user_id = $1`,
+            [user_id]
         );
 
-        const recipe = recipeRes.rows[0];
-        if (!recipe) throw new NotFoundError(`No recipe found with URI: ${recipe_id}`);
-
-        // Directly use the array of ingredients
-        const ingredients = recipe.ingredients;
+        const recipe = userRes.rows[0];
+        if (!recipe) throw new NotFoundError(`No user found with ID: ${user_id}`);
 
         // Insert the array of ingredients
         await db.query(

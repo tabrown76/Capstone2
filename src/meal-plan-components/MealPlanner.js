@@ -20,7 +20,7 @@ import "../styles/MealPlanner.css";
  */
 const MealPlanner = () => {
   const { value } = useContext(MealContext);
-  const { recipeList, setRecipeList, weekList, dragIds, setDragIds} = value;
+  const { recipeList, setRecipeList, weekList, dragIds, setDragIds } = value;
 
   /**
    * Handles the end of a drag event.
@@ -58,8 +58,18 @@ const MealPlanner = () => {
   
       const updatedRecipeList = recipeList.filter(recipe => recipe.id !== active.id);
       setRecipeList(updatedRecipeList);
+    } else {
+      // Moving a recipe from the RecipeReceiver to the RecipeList
+      const activeIndex = dragIds.findIndex(item => item.id === active.id);
+      const updatedDragIds = [...dragIds];
+      if (activeIndex !== -1) {
+        const { recipe, ...rest } = updatedDragIds[activeIndex];
+        updatedDragIds[activeIndex] = rest;
+        const updatedRecipeList = [...recipeList, recipe];
+        setRecipeList(updatedRecipeList);
+      }
+      setDragIds(updatedDragIds);
     }
-
   }
   
   const verticalSortingFunc = (active, over, overContainer) => {

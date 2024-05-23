@@ -37,8 +37,8 @@ CREATE TABLE recipes_users (
 -- Table for shopping lists
 CREATE TABLE shopping_list (
   list_id SERIAL PRIMARY KEY,
-  user_id INTEGER,
-  ingredient TEXT[],
+  user_id INTEGER UNIQUE,
+  ingredients TEXT[],
   CONSTRAINT fk_user_shopping_list
     FOREIGN KEY(user_id) 
     REFERENCES users(user_id)

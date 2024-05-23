@@ -25,7 +25,7 @@ class RecipesUsers {
     );
 
     if (duplicateCheck.rows[0]) {
-      throw new BadRequestError(`This user already has this recipe saved: ${recipe_id}`);
+      return duplicateCheck.rows[0];
     }
 
     // Add relationship

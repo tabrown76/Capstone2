@@ -4,6 +4,7 @@ import { Spinner } from "reactstrap";
 import { Context } from "./contexts/Context";
 import Home from "./routes/Home";
 import MealPlan from "./routes/MealPlan";
+import ShoppingList from "./routes/ShoppingList";
 import LoginForm from "./routes/LoginForm";
 import SignupForm from "./routes/SignupForm";
 import NotFound from "./routes/NotFound";
@@ -36,6 +37,7 @@ const RecipeRoutes = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/:userId/mealplan" element={<MealPlan />} />
+          <Route path="/:userId/shopping" element={<ShoppingList />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/signup" element={<SignupForm />} />
           <Route path="/NotAuthorized" element={<NotAuthorized />} />

@@ -29,7 +29,7 @@ const CalendarCard = ({date, id}) => {
             <li className="calendar-card-li"  key={date.id}>
                 <span>{date.date}</span>
                 <SortableContext items={items} strategy={verticalListSortingStrategy} id='recipe-receiver'>
-                    <RecipeReciever key={id} id={id}/>
+                    <RecipeReciever key={id} date={date.date} id={id}/>
                 </SortableContext>
             </li>
         </>  

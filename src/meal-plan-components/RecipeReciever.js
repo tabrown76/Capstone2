@@ -1,7 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSortable,  } from "@dnd-kit/sortable";
 import { CSS } from '@dnd-kit/utilities';
+import { google } from "calendar-link";
 import { MealContext } from "../contexts/MealContext";
 import { Button } from "reactstrap";
 import NewEatsApi from "../Api";
@@ -19,13 +20,21 @@ import "../styles/RecipeReceiver.css";
  *   <RecipeReceiver id={id} />
  * )
  */
-const RecipeReceiver = ({ id }) => {
+const RecipeReceiver = ({ id, date }) => {
   const {value} = useContext(MealContext);
-  const {dragIds} = value;
+  const {dragIds, setDragIds, recipeList, setRecipeList} = value;
   const {attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({id});
   const {userId} = useParams()
+  const [googleUrl, setGoogleUrl] = useState(null);
+  const [receivedRecipe, setReceivedRecipe] = useState([]);
 
-  const receivedRecipe = dragIds.find(item => item.id === id);
+  useEffect(() => {
+    const setData = () => {
+      const receivedRecipe = dragIds.find(item => item.id === id);
+      setReceivedRecipe(receivedRecipe);
+    }
+    setData();
+  }, [dragIds, id])
 
   const style = {
     transition,
@@ -34,14 +43,45 @@ const RecipeReceiver = ({ id }) => {
     pointerEvents: isDragging ? 'none' : 'auto'
   }
 
-  const handleMakeThisClick = (event) => {
-    event.preventDefault(); 
-    window.open(receivedRecipe.recipe.url, '_blank');
+  const handleClick = () => {
+    const ingredients = {
+      ingredients: receivedRecipe.recipe.ingredients
+    }
+    NewEatsApi.createShoppingList(userId, ingredients);
   }
 
-  const handleClick = () => {
-    NewEatsApi.createShoppingList(userId, receivedRecipe.recipe.ingredients)
-  }
+  useEffect(() => {
+    if(receivedRecipe && receivedRecipe.recipe){
+      const event = {
+        title: `${receivedRecipe.recipe.label}`,
+        description: `${receivedRecipe.recipe.url}`,
+        start: `${date} 18:00:00`,
+        duration: [3, 'hour']
+      }
+      
+        setGoogleUrl(google(event)); 
+    }
+  }, [receivedRecipe, date])
+
+  /**
+   * Handles the click event on the close icon to delete the recipe.
+   * 
+   * @param {Object} e - The event object.
+   */
+  const handleIconClick = (e, recipe) => {
+    e.stopPropagation();
+
+    const updatedDragIds = dragIds.map(item => {
+      if (item.id === id) {
+        return { id: item.id };
+      }
+      return item;
+    })
+
+    setDragIds(updatedDragIds);
+    const updatedRecipeList = [...recipeList, recipe]
+    setRecipeList(updatedRecipeList);
+  };
 
   return (
     <>
@@ -50,19 +90,20 @@ const RecipeReceiver = ({ id }) => {
         {...attributes}
         {...listeners}
         style={style}
-        className="recipe-receiver draggable"
+        className="recipe-receiver"
         data-sortable-container-id="recipe-receiver"
         data-sortable-id={id}
       >
-        {receivedRecipe.recipe ? (
+        {receivedRecipe && receivedRecipe.recipe ? (
           <>
             <img src={receivedRecipe.recipe.image} alt={receivedRecipe.recipe.label} />
             <div className="recipe-details">
               <h3>{receivedRecipe.recipe.label}</h3>
+              <div className="close-icon" onClick={(e) => handleIconClick(e, receivedRecipe.recipe)}>&times;</div>
               <div className="buttons-container">
               <a 
-                href="#"
-                onClick={handleMakeThisClick}
+                href={googleUrl}
+                target="_blank"
                 rel="noopener noreferrer"
                 className="Button btn btn-secondary"
               >

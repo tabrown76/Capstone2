@@ -17,9 +17,9 @@ const CalendarView = ({weekList}) => {
     <>
       <h3>Drag your recipes over to customize your weekly meal plan.</h3>
       <ul className="calendar-list" >
-        {weekList.map((date) =>{
-          return <CalendarCard key={date.id} date={date} id={date.id} />
-        })}
+        {weekList.map((date) =>(
+          <CalendarCard key={date.id} date={date} id={date.id} />
+        ))}
       </ul>
     </>
   );
