@@ -62,12 +62,15 @@ const MealPlanner = () => {
       // Moving a recipe from the RecipeReceiver to the RecipeList
       const activeIndex = dragIds.findIndex(item => item.id === active.id);
       const updatedDragIds = [...dragIds];
-      if (activeIndex !== -1) {
-        const { recipe, ...rest } = updatedDragIds[activeIndex];
-        updatedDragIds[activeIndex] = rest;
-        const updatedRecipeList = [...recipeList, recipe];
-        setRecipeList(updatedRecipeList);
+      
+      const { recipe, ...rest } = updatedDragIds[activeIndex];
+      if(recipe === undefined) {
+        return;
       }
+      updatedDragIds[activeIndex] = rest;
+      const updatedRecipeList = [...recipeList, recipe];
+
+      setRecipeList(updatedRecipeList);
       setDragIds(updatedDragIds);
     }
   }
