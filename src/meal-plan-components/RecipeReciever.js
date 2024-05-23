@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useParams } from "react-router-dom";
 import { useSortable,  } from "@dnd-kit/sortable";
 import { CSS } from '@dnd-kit/utilities';
+import { MealContext } from "../contexts/MealContext";
+import { Button } from "reactstrap";
+import NewEatsApi from "../Api";
+import "../styles/RecipeReceiver.css";
 
 /**
  * RecipeReceiver component that acts as a droppable area for recipes.
@@ -15,13 +20,27 @@ import { CSS } from '@dnd-kit/utilities';
  * )
  */
 const RecipeReceiver = ({ id }) => {
+  const {value} = useContext(MealContext);
+  const {dragIds} = value;
   const {attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({id});
+  const {userId} = useParams()
+
+  const receivedRecipe = dragIds.find(item => item.id === id);
 
   const style = {
     transition,
     transform: CSS.Transform.toString(transform),
     opacity: isDragging ? 0.5 : 1,
     pointerEvents: isDragging ? 'none' : 'auto'
+  }
+
+  const handleMakeThisClick = (event) => {
+    event.preventDefault(); 
+    window.open(receivedRecipe.recipe.url, '_blank');
+  }
+
+  const handleClick = () => {
+    NewEatsApi.createShoppingList(userId, receivedRecipe.recipe.ingredients)
   }
 
   return (
@@ -35,7 +54,27 @@ const RecipeReceiver = ({ id }) => {
         data-sortable-container-id="recipe-receiver"
         data-sortable-id={id}
       >
-        Drop here
+        {receivedRecipe.recipe ? (
+          <>
+            <img src={receivedRecipe.recipe.image} alt={receivedRecipe.recipe.label} />
+            <div className="recipe-details">
+              <h3>{receivedRecipe.recipe.label}</h3>
+              <div className="buttons-container">
+              <a 
+                href="#"
+                onClick={handleMakeThisClick}
+                rel="noopener noreferrer"
+                className="Button btn btn-secondary"
+              >
+                Make This!
+              </a>
+              <Button className="Button btn btn-secondary" onClick={handleClick}>Add Ingredients to Shopping List</Button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <p>Drop recipe here</p>
+        )}
       </div>
     </>
   );

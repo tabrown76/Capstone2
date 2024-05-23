@@ -87,7 +87,7 @@ export const MealContextProvider = ({ children }) => {
         setWeekList,
         dragIds, 
         setDragIds
-    }), [recipeList, weekList, dragIds])
+    }), [recipeList, weekList, dragIds, setDragIds])
 
     /**
    * Handles the click event to delete a recipe for the user.

@@ -22,11 +22,13 @@ const CalendarCard = ({date, id}) => {
     const {value} = useContext(MealContext);
     const {dragIds} = value;
 
+    const items = dragIds.map(item => ({ id: item.id, containerId: 'recipe-receiver' }));
+
     return(
         <>
-            <li className="calendar-card-li">
-                <span   key={date.id} >{date.date}</span>
-                <SortableContext items={dragIds.map(item => item.id)} strategy={verticalListSortingStrategy} id='recipe-receiver'>
+            <li className="calendar-card-li"  key={date.id}>
+                <span>{date.date}</span>
+                <SortableContext items={items} strategy={verticalListSortingStrategy} id='recipe-receiver'>
                     <RecipeReciever key={id} id={id}/>
                 </SortableContext>
             </li>

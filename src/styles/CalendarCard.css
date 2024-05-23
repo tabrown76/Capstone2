@@ -27,20 +27,6 @@ li.calendar-card-li span {
     font-size: 1.2em; 
 }
 
-/* Add styling for RecipeReceiver */
-.recipe-receiver {
-    height: 80px; 
-    background-color: #e0e0e0; 
-    margin-top: 15px; 
-    width: 100%; /* Ensure full width */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px dashed #ccc;
-    position: relative; 
-    border-radius: 5px;
-}
-
 h3 {
     font-size: 1em; 
     margin: 0 0 10px 0; 

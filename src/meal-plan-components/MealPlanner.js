@@ -43,14 +43,35 @@ const MealPlanner = () => {
   }
 
   const horizontalSortingFunc = (active, over, activeContainer, overContainer) => {
+    if (activeContainer === 'recipes' && overContainer === 'recipe-receiver') {
+      // Moving a recipe from the RecipeList to the RecipeReceiver
+      const overIndex = dragIds.findIndex(item => item.id === over.id);
+      const updatedDragIds = [...dragIds];
+  
+      if (overIndex !== -1) {
+        updatedDragIds.splice(overIndex, 1, { id: over.id, recipe: recipeList.find(recipe => recipe.id === active.id) });
+      } else {
+        return;
+      }
+  
+      setDragIds(updatedDragIds);
+  
+      const updatedRecipeList = recipeList.filter(recipe => recipe.id !== active.id);
+      setRecipeList(updatedRecipeList);
+    }
 
   }
   
   const verticalSortingFunc = (active, over, overContainer) => {
+    console.log(`inside vert sorting`);
     let items = overContainer === 'recipes' ? [...recipeList] : [...dragIds];
+    console.log(`items: ${JSON.stringify(items)}`);
     const oldIndex = items.findIndex(item => item.id === active.id);
+    console.log(`oldIdx: ${oldIndex}`);
     const newIndex = items.findIndex(item => item.id === over.id);
+    console.log(`newIdx: ${newIndex}`);
     items = arrayMove(items, oldIndex, newIndex);
+    console.log(`items again: ${JSON.stringify(items)}`);
     overContainer === 'recipes' ? setRecipeList(items) : setDragIds(items);
   }  
   

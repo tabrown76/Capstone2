@@ -13,10 +13,11 @@ import RecipeCard from './RecipeCard';
  * )
  */
 const RecipeList = ({recipeList}) => {
+  const items = recipeList.map(item => ({ id: item.id, containerId: 'recipes' }));
 
   return (
     <ul className="recipe-list" >
-      <SortableContext items={recipeList.map(recipe => recipe.id)} strategy={verticalListSortingStrategy} id='recipes'>
+      <SortableContext items={items} strategy={verticalListSortingStrategy} id='recipes'>
         {recipeList && recipeList.map((recipe) => (
           <RecipeCard key={recipe.id} recipe={recipe} id={recipe.id} />
         ))} 

@@ -11,9 +11,13 @@ import { PointerSensor } from '@dnd-kit/core';
     {
       eventName: 'onPointerDown',
       handler: ({ nativeEvent: event }) => {
-        if (event.target.closest('.close-icon')) {
+        const closestCloseIcon = event.target.closest('.close-icon');
+        const closestButton = event.target.closest('.Button');
+
+        if (closestCloseIcon || closestButton) {
           return false;
         }
+
         return true;
       },
     },
