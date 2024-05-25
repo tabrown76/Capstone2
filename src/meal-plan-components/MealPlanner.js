@@ -47,9 +47,12 @@ const MealPlanner = () => {
       // Moving a recipe from the RecipeList to the RecipeReceiver
       const overIndex = dragIds.findIndex(item => item.id === over.id);
       const updatedDragIds = [...dragIds];
-  
+   
       if (overIndex !== -1) {
-        updatedDragIds.splice(overIndex, 1, { id: over.id, recipe: recipeList.find(recipe => recipe.id === active.id) });
+        updatedDragIds.splice(overIndex, 1, { 
+          id: over.id, 
+          recipe: recipeList.find(recipe => recipe.id === active.id)
+        });
       } else {
         return;
       }
@@ -98,7 +101,7 @@ const MealPlanner = () => {
   
 
   const allItems = [
-    ...recipeList.map(recipe => ({ id: recipe.id, containerId: 'recipes' })),
+    ...recipeList.map(recipe => ({ id: recipe.id, containerId: ['recipes', 'recipe-receiver'] })),
     ...dragIds.map(item => ({id: item.id, containerId: 'recipe-receiver'}))
   ];
 
