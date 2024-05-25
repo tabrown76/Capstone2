@@ -107,7 +107,7 @@ const RecipeReceiver = ({ id, date }) => {
                 rel="noopener noreferrer"
                 className="Button btn btn-secondary"
               >
-                Make This!
+                Add to Google Calendar
               </a>
               <Button className="Button btn btn-secondary" onClick={handleClick}>Add Ingredients to Shopping List</Button>
               </div>
